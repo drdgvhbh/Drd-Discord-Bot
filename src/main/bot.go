@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/signal"
@@ -15,25 +17,68 @@ import (
 	"github.com/urfave/cli"
 )
 
+func captureStdout(f func()) string {
+	old := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	f()
+
+	w.Close()
+	os.Stdout = old
+
+	var buf bytes.Buffer
+	io.Copy(&buf, r)
+	return buf.String()
+}
+
+func doSomething() {
+	fmt.Println("This goes to STDOUT")
+}
+
+func example() {
+
+	// invoke doSomething and return whatever it writes to STDOUT
+	message := captureStdout(doSomething)
+	fmt.Println("derp", message)
+
+}
+
 func init() {
 }
 
 func main() {
+	example()
+	if godotenv.Load() != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	app := cli.NewApp()
-	app.Name = "greet"
+
+	app.Name = os.Getenv("APP_NAME")
+	app.HelpName = "!ruin"
 	app.Usage = "fight the loneliness!"
 	app.Action = func(c *cli.Context) error {
 		fmt.Println("Hello friend!")
 		return nil
 	}
+	app.After = func(c *cli.Context) error {
+		fmt.Println("trash", c.App)
+		return nil
+	}
+
+	app.Writer = func(w io.Writer) {
+		fmt.Fprintf(w, "best of luck to you\n")
+	}
+
+	/* 	cli.HelpPrinter = func(w io.Writer, templ string, data interface{}) {
+		fmt.Fprintf(w, "best of luck to you\n")
+		fmt.Println(data)
+	} */
 
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	if godotenv.Load() != nil {
-		log.Fatal("Error loading .env file")
 	}
 
 	botToken := os.Getenv("BOT_TOKEN")
