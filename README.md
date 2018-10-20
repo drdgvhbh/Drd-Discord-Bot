@@ -1,4 +1,4 @@
-# Ruin and Grief Discord Bot
+# Drd Discord Bot
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@
 
 ```
 NAME:
-  ${APP_NAME} - A general purpose bot for ruining and griefing
+  ${APP_NAME} - A general purpose discord bot
 
  USAGE:
   ${CMD_PREFIX} [global options] command [command options] [arguments...]
@@ -42,9 +42,9 @@ NAME:
 1. Create a `.env` file in the root of your directory and fill it in with the following fields
 
 ```
-APP_NAME=Ruin and Grief Bot
-CMD_PREFIX=!ruin
-BOT_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+APP_NAME=Drd Discord Bot
+CMD_PREFIX=!bot
+BOT_TOKEN=NTAxNzg4MTMzODY0NTA1MzY0.DqqyWg.oo42O3QuiUAzlT9aVOT4gJgh19Y
 EOF_DELIM=EOF
 ```
 
@@ -65,5 +65,5 @@ npm run watch
 ### Terminal 2
 
 ```sh
-./bin/RuinAndGrief.exe
+./bin/DiscordBot.exe
 ```

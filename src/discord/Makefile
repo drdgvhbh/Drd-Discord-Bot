@@ -6,7 +6,7 @@ GOGET=$(GOCMD) get
 OUTPUT_DIR=../../bin/
 ENTRY=./bot.go
 
-BINARY_NAME=$(OUTPUT_DIR)RuinAndGrief.exe
+BINARY_NAME=$(OUTPUT_DIR)DiscordBot.exe
 BINARY_UNIX=$(BINARY_NAME)_unix
 
 build:

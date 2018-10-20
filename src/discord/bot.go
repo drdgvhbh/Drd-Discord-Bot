@@ -116,14 +116,6 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		return
 	}
 
-	if strings.ToUpper(message.Content) == "RUIN" {
-		session.ChannelMessageSend(message.ChannelID, "Grief")
-	}
-
-	if strings.ToUpper(message.Content) == "GRIEF" {
-		session.ChannelMessageSend(message.ChannelID, "Ruin")
-	}
-
 	cmdPrefix := os.Getenv("CMD_PREFIX")
 	if strings.HasPrefix(message.Content, cmdPrefix) {
 		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)

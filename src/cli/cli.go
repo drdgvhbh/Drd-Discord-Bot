@@ -12,7 +12,7 @@ func CreateCLI(
 ) *cli.App {
 	App := cli.NewApp()
 	App.Name = appName
-	App.Usage = "A general purpose bot for ruining and griefing"
+	App.Usage = "A general purpose discord bot"
 	App.HelpName = helpName
 
 	return App

@@ -1,5 +1,5 @@
 {
-  "name": "ruinandgriefbot",
+  "name": "drd-discord-bot",
   "version": "1.0.0",
   "description": "## Building",
   "main": "index.js",
@@ -9,16 +9,8 @@
     "start": "make run",
     "watch": "npm-watch build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/drdgvhbh/RuinAndGriefBot.git"
-  },
-  "author": "",
+  "author": "drdgvhbh",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/drdgvhbh/RuinAndGriefBot/issues"
-  },
-  "homepage": "https://github.com/drdgvhbh/RuinAndGriefBot#readme",
   "watch": {
     "build": {
       "patterns": [

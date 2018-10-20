@@ -14,7 +14,7 @@ build:
 
 run:
 	cd $(BIN_DIR)
-	RuinAndGrief.exe
+	DiscordBot.exe
 
 clean:
 	rm -r -f $(BIN_DIR)
