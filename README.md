@@ -7,6 +7,27 @@
 - [Make](http://gnuwin32.sourceforge.net/packages/make.htm)
 - [Discord](https://discordapp.com/)
 
+## Usage
+
+```
+NAME:
+  ${APP_NAME} - A general purpose bot for ruining and griefing
+
+ USAGE:
+  ${CMD_PREFIX} [global options] command [command options] [arguments...]
+
+ VERSION:
+  0.0.0
+
+ COMMANDS:
+    anime    List anime commands
+    help, h  Shows a list of commands or help for one command
+
+ GLOBAL OPTIONS:
+  --help, -h     show help
+  --version, -v  print the version
+```
+
 ## Setup
 
 1. Create a developer account on the [Discord Developer Portal](https://discordapp.com/developers/applications/)
