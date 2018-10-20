@@ -3,16 +3,17 @@ package botcli
 import _ "github.com/joho/godotenv/autoload"
 
 import (
-	"os"
-
 	"github.com/urfave/cli"
 )
 
-func CreateCLI() *cli.App {
+func CreateCLI(
+	appName string,
+	helpName string,
+) *cli.App {
 	App := cli.NewApp()
-	App.Name = os.Getenv("APP_NAME")
+	App.Name = appName
 	App.Usage = "A general purpose bot for ruining and griefing"
-	App.HelpName = os.Getenv("HELP_NAME")
+	App.HelpName = helpName
 
 	return App
 }

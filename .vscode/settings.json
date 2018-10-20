@@ -2,5 +2,8 @@
   "go.autocompleteUnimportedPackages": true,
   "go.formatTool": "goimports",
   "go.inferGopath": true,
-"go.buildOnSave": "package"
+"go.buildOnSave": "package",
+"cSpell.words": [
+    "animes"
+]
 }

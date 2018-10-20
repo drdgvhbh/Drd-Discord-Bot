@@ -3,16 +3,15 @@ package main
 import (
 	botcli "cli"
 	"discord/anime/mal"
+	messageMal "discord/message/anime/mal"
 	messageMiddleware "discord/message/middleware"
-	"encoding/binary"
+	"discord/writer"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 	_ "github.com/joho/godotenv/autoload"
@@ -47,8 +46,38 @@ func init() {
 
  COPYRIGHT:
 	{{.Copyright}}{{end}}
-EOF
- `
+ ` + fmt.Sprintf("\n%s", os.Getenv("EOF_DELIM"))
+
+	cli.CommandHelpTemplate = `NAME:
+ {{.HelpName}} - {{.Usage}}
+
+USAGE:
+ {{if .UsageText}}{{.UsageText}}{{else}}{{.HelpName}}{{if .VisibleFlags}} [command options]{{end}} {{if .ArgsUsage}}{{.ArgsUsage}}{{else}}[arguments...]{{end}}{{end}}{{if .Category}}
+
+CATEGORY:
+ {{.Category}}{{end}}{{if .Description}}
+
+DESCRIPTION:
+ {{.Description}}{{end}}{{if .VisibleFlags}}
+
+OPTIONS:
+ {{range .VisibleFlags}}{{.}}
+ {{end}}{{end}}
+` + fmt.Sprintf("\n%s", os.Getenv("EOF_DELIM"))
+	cli.SubcommandHelpTemplate = `NAME:
+ {{.HelpName}} - {{if .Description}}{{.Description}}{{else}}{{.Usage}}{{end}}
+
+USAGE:
+ {{if .UsageText}}{{.UsageText}}{{else}}{{.HelpName}} command{{if .VisibleFlags}} [command options]{{end}} {{if .ArgsUsage}}{{.ArgsUsage}}{{else}}[arguments...]{{end}}{{end}}
+
+COMMANDS:{{range .VisibleCategories}}{{if .Name}}
+ {{.Name}}:{{end}}{{range .VisibleCommands}}
+   {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}
+{{end}}{{if .VisibleFlags}}
+OPTIONS:
+ {{range .VisibleFlags}}{{.}}
+ {{end}}{{end}}
+` + fmt.Sprintf("\n%s", os.Getenv("EOF_DELIM"))
 }
 
 func main() {
@@ -86,101 +115,74 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	if (!messageMiddleware.IgnoreOwnMessagesMiddleware{}.ProcessMessage(session, message)) {
 		return
 	}
-	if message.Content == "apes" {
-		var userProfile = mal.GetProfile("Genshyguy")
-		log.Println(userProfile)
 
-		var favouriteAnimes string
-		for _, animes := range userProfile.Favorites.Anime {
-			favouriteAnimes += animes.Name
-			favouriteAnimes += "\n"
-		}
-		embed := &discordgo.MessageEmbed{
-			Author:      &discordgo.MessageEmbedAuthor{},
-			Color:       0x2E51A2, // Green
-			Description: "My Anime List Profile",
-			Fields: []*discordgo.MessageEmbedField{
-				&discordgo.MessageEmbedField{
-					Name:   "Last Online",
-					Value:  userProfile.LastOnline.Format("01/02/2006 15:04"),
-					Inline: true,
-				},
-				&discordgo.MessageEmbedField{
-					Name:   "Gender",
-					Value:  userProfile.Gender,
-					Inline: true,
-				},
-				&discordgo.MessageEmbedField{
-					Name:   "Birthday",
-					Value:  userProfile.Birthday.Format("01/02/2006"),
-					Inline: true,
-				},
-				&discordgo.MessageEmbedField{
-					Name:   "Joined",
-					Value:  userProfile.Joined.Format("01/02/2006"),
-					Inline: true,
-				},
-				&discordgo.MessageEmbedField{
-					Name:   "Favorite Animes",
-					Value:  favouriteAnimes,
-					Inline: false,
-				},
-			},
-			Image: &discordgo.MessageEmbedImage{
-				URL: userProfile.ImageURL,
-			},
-			Thumbnail: &discordgo.MessageEmbedThumbnail{
-				URL: userProfile.ImageURL,
-			},
-			Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
-			Title:     userProfile.Username,
-		}
-		session.ChannelMessageSendEmbed(message.ChannelID, embed)
-	}
-
-	// If the message is "ping" reply with "Pong!"
-	if message.Content == "Ruin" {
+	if strings.ToUpper(message.Content) == "RUIN" {
 		session.ChannelMessageSend(message.ChannelID, "Grief")
 	}
 
-	// If the message is "pong" reply with "Ping!"
-	if message.Content == "Grief" {
+	if strings.ToUpper(message.Content) == "GRIEF" {
 		session.ChannelMessageSend(message.ChannelID, "Ruin")
 	}
 
-	prefix := "!ruin"
-	if strings.HasPrefix(message.Content, prefix) {
-		cmdStr := strings.TrimPrefix(message.Content, prefix)
+	cmdPrefix := os.Getenv("CMD_PREFIX")
+	if strings.HasPrefix(message.Content, cmdPrefix) {
+		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)
 		args := strings.Split(cmdStr, " ")
-		cliApp := botcli.CreateCLI()
+		cliApp := botcli.CreateCLI(os.Getenv("APP_NAME"), cmdPrefix)
 
-		var sb strings.Builder
-		writer := customWriter{&sb, session, message.ChannelID}
+		writer := writer.CreateDiscordWriter(
+			session, message.ChannelID, os.Getenv("EOF_DELIM"))
 		cliApp.Writer = writer
+
+		cliApp.Action = func(c *cli.Context) error {
+			return nil
+		}
+		cliApp.Commands = []cli.Command{
+			{
+				Name:  "anime",
+				Usage: "List anime commands",
+				Action: func(c *cli.Context) error {
+					cli.ShowCommandHelp(c, "anime")
+
+					return nil
+				},
+				Subcommands: cli.Commands{
+					cli.Command{
+						Name:  "profile",
+						Usage: "Displays a user's anime profile",
+						Flags: []cli.Flag{
+							cli.StringFlag{
+								Name:  "name, n",
+								Usage: "My Anime List Username",
+							},
+						},
+						Action: func(c *cli.Context) error {
+							userProfile, err := mal.GetProfile(c.String("name"))
+							if err != nil {
+								log.Panicln(err)
+								return nil
+							}
+							options := messageMal.CreateAnimeProfileEmbeddedOptions{
+								AnimeProfile: userProfile,
+							}
+							embeddedMessage := messageMal.CreateAnimeProfileEmbedded(
+								options)
+
+							_, error := session.ChannelMessageSendEmbed(message.ChannelID, embeddedMessage)
+							if error != nil {
+								log.Panic(error)
+							}
+							return nil
+						},
+					},
+				},
+			},
+		}
 
 		err := cliApp.Run(args)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 	}
-}
-
-type customWriter struct {
-	strBuilder *strings.Builder
-	session    *discordgo.Session
-	channelID  string
-}
-
-func (w customWriter) Write(p []byte) (n int, err error) {
-	print(string(p[:]))
-
-	if binary.Size(p) == 3 && string(p[:]) == "EOF" {
-		w.session.ChannelMessageSend(w.channelID, fmt.Sprintf("```%s```", w.strBuilder.String()))
-		w.strBuilder.Reset()
-	} else {
-		bytes, err := w.strBuilder.Write(p)
-		return bytes, err
-	}
-	return 0, io.EOF
 }
