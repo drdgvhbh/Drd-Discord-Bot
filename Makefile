@@ -1,32 +1,20 @@
-# Basic go commands
-GOCMD=go
-GOBUILD=$(GOCMD) build
-GOCLEAN=$(GOCMD) clean
-GOTEST=$(GOCMD) test
-GOGET=$(GOCMD) get
-ENTRY_DIR=./src/main/
+BUILD_CMD=make build
 
-# Binary names
-BINARY_NAME=RuinAndGrief.exe
-BINARY_UNIX=$(BINARY_NAME)_unix
+BIN_DIR=bin
+CLI_PKG_DIR=src/cli
+DISCORD_PKG_DIR=src/discord
+
+build_discord:
+	cd $(DISCORD_PKG_DIR)
+	$(BUILD_CMD)
 
 build:
-	$(GOBUILD) -o $(BINARY_NAME) -v $(ENTRY_DIR)
+	cp .env bin/
+	make build_discord
 
 run:
-	$(GOBUILD) -o $(BINARY_NAME) -v $(ENTRY_DIR)
-	./$(BINARY_NAME)
-
-test:
-	$(GOTEST) -v ./...
+	cd $(BIN_DIR)
+	RuinAndGrief.exe
 
 clean:
-	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
-	rm -f $(BINARY_UNIX)
-
-install:
-	$(GOGET) github.com/parnurzeal/gorequest
-	$(GOGET) github.com/bwmarrin/discordgo
-	$(GOGET) github.com/joho/godotenv
-	$(GOGET) github.com/urfave/cli
+	rm -r -f $(BIN_DIR)

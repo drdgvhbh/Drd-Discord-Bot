@@ -1,86 +1,57 @@
 package main
 
 import (
-	"bytes"
+	botcli "cli"
+	"discord/anime/mal"
+	messageMiddleware "discord/message/middleware"
+	"encoding/binary"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
-	"../anime/mal"
-	messageMiddleware "../message/middleware"
 	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/urfave/cli"
 )
 
-func captureStdout(f func()) string {
-	old := os.Stdout
-	r, w, _ := os.Pipe()
-	os.Stdout = w
-
-	f()
-
-	w.Close()
-	os.Stdout = old
-
-	var buf bytes.Buffer
-	io.Copy(&buf, r)
-	return buf.String()
-}
-
-func doSomething() {
-	fmt.Println("This goes to STDOUT")
-}
-
-func example() {
-
-	// invoke doSomething and return whatever it writes to STDOUT
-	message := captureStdout(doSomething)
-	fmt.Println("derp", message)
-
-}
-
 func init() {
+	cli.AppHelpTemplate = `NAME:
+	{{.Name}}{{if .Usage}} - {{.Usage}}{{end}}
+
+ USAGE:
+	{{if .UsageText}}{{.UsageText}}{{else}}{{.HelpName}} {{if .VisibleFlags}}[global options]{{end}}{{if .Commands}} command [command options]{{end}} {{if .ArgsUsage}}{{.ArgsUsage}}{{else}}[arguments...]{{end}}{{end}}{{if .Version}}{{if not .HideVersion}}
+
+ VERSION:
+	{{.Version}}{{end}}{{end}}{{if .Description}}
+
+ DESCRIPTION:
+	{{.Description}}{{end}}{{if len .Authors}}
+
+ AUTHOR{{with $length := len .Authors}}{{if ne 1 $length}}S{{end}}{{end}}:
+	{{range $index, $author := .Authors}}{{if $index}}
+	{{end}}{{$author}}{{end}}{{end}}{{if .VisibleCommands}}
+
+ COMMANDS:{{range .VisibleCategories}}{{if .Name}}
+
+	{{.Name}}:{{end}}{{range .VisibleCommands}}
+	  {{join .Names ", "}}{{"\t"}}{{.Usage}}{{end}}{{end}}{{end}}{{if .VisibleFlags}}
+
+ GLOBAL OPTIONS:
+	{{range $index, $option := .VisibleFlags}}{{if $index}}
+	{{end}}{{$option}}{{end}}{{end}}{{if .Copyright}}
+
+ COPYRIGHT:
+	{{.Copyright}}{{end}}
+EOF
+ `
 }
 
 func main() {
-	example()
-	if godotenv.Load() != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	app := cli.NewApp()
-
-	app.Name = os.Getenv("APP_NAME")
-	app.HelpName = "!ruin"
-	app.Usage = "fight the loneliness!"
-	app.Action = func(c *cli.Context) error {
-		fmt.Println("Hello friend!")
-		return nil
-	}
-	app.After = func(c *cli.Context) error {
-		fmt.Println("trash", c.App)
-		return nil
-	}
-
-	app.Writer = func(w io.Writer) {
-		fmt.Fprintf(w, "best of luck to you\n")
-	}
-
-	/* 	cli.HelpPrinter = func(w io.Writer, templ string, data interface{}) {
-		fmt.Fprintf(w, "best of luck to you\n")
-		fmt.Println(data)
-	} */
-
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	botToken := os.Getenv("BOT_TOKEN")
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + botToken)
@@ -111,11 +82,11 @@ func main() {
 
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the autenticated bot has access to.
-func messageCreate(session *discordgo.Session, m *discordgo.MessageCreate) {
-	if (!messageMiddleware.IgnoreOwnMessagesMiddleware{}.ProcessMessage(session, m)) {
+func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate) {
+	if (!messageMiddleware.IgnoreOwnMessagesMiddleware{}.ProcessMessage(session, message)) {
 		return
 	}
-	if m.Content == "apes" {
+	if message.Content == "apes" {
 		var userProfile = mal.GetProfile("Genshyguy")
 		log.Println(userProfile)
 
@@ -164,16 +135,52 @@ func messageCreate(session *discordgo.Session, m *discordgo.MessageCreate) {
 			Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
 			Title:     userProfile.Username,
 		}
-		session.ChannelMessageSendEmbed(m.ChannelID, embed)
+		session.ChannelMessageSendEmbed(message.ChannelID, embed)
 	}
 
 	// If the message is "ping" reply with "Pong!"
-	if m.Content == "Ruin" {
-		session.ChannelMessageSend(m.ChannelID, "Grief")
+	if message.Content == "Ruin" {
+		session.ChannelMessageSend(message.ChannelID, "Grief")
 	}
 
 	// If the message is "pong" reply with "Ping!"
-	if m.Content == "Grief" {
-		session.ChannelMessageSend(m.ChannelID, "Ruin")
+	if message.Content == "Grief" {
+		session.ChannelMessageSend(message.ChannelID, "Ruin")
 	}
+
+	prefix := "!ruin"
+	if strings.HasPrefix(message.Content, prefix) {
+		cmdStr := strings.TrimPrefix(message.Content, prefix)
+		args := strings.Split(cmdStr, " ")
+		cliApp := botcli.CreateCLI()
+
+		var sb strings.Builder
+		writer := customWriter{&sb, session, message.ChannelID}
+		cliApp.Writer = writer
+
+		err := cliApp.Run(args)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+	}
+}
+
+type customWriter struct {
+	strBuilder *strings.Builder
+	session    *discordgo.Session
+	channelID  string
+}
+
+func (w customWriter) Write(p []byte) (n int, err error) {
+	print(string(p[:]))
+
+	if binary.Size(p) == 3 && string(p[:]) == "EOF" {
+		w.session.ChannelMessageSend(w.channelID, fmt.Sprintf("```%s```", w.strBuilder.String()))
+		w.strBuilder.Reset()
+	} else {
+		bytes, err := w.strBuilder.Write(p)
+		return bytes, err
+	}
+	return 0, io.EOF
 }
