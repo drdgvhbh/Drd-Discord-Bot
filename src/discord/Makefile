@@ -25,6 +25,7 @@ clean:
 	rm -f $(BINARY_UNIX)
 
 install:
+	$(GOGET) github.com/urfave/cli
 	$(GOGET) github.com/parnurzeal/gorequest
 	$(GOGET) github.com/bwmarrin/discordgo
 	$(GOGET) github.com/joho/godotenv
