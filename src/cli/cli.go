@@ -1,4 +1,4 @@
-package botcli
+package cli
 
 import _ "github.com/joho/godotenv/autoload"
 

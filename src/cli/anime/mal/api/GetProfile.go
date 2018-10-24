@@ -1,4 +1,4 @@
-package mal
+package api
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-func GetProfile(username string) (*UserProfile, error) {
+func GetProfile(username string) (*UserProfileResponse, error) {
 	var url = fmt.Sprintf("https://api.jikan.moe/v3/user/%s/", username)
 	_, body, errs := gorequest.New().Post(url).End()
 	if errs != nil {
@@ -15,7 +15,7 @@ func GetProfile(username string) (*UserProfile, error) {
 			"Failed to retrieve MAL profile for user: %s", username)
 	}
 
-	var userProfile = &UserProfile{}
+	var userProfile = &UserProfileResponse{}
 	json.Unmarshal([]byte(body), userProfile)
 	return userProfile, nil
 }

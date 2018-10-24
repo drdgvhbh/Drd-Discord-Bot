@@ -1,8 +1,8 @@
-package mal
+package api
 
 import "time"
 
-type UserProfile struct {
+type UserProfileResponse struct {
 	RequestHash        string    `json:"request_hash"`
 	RequestCached      bool      `json:"request_cached"`
 	RequestCacheExpiry int       `json:"request_cache_expiry"`

@@ -1,9 +1,8 @@
 package main
 
 import (
-	botcli "cli"
-	"discord/anime/mal"
-	messageMal "discord/message/anime/mal"
+	botCli "cli"
+	"cli/anime/mal/commands"
 	messageMiddleware "discord/message/middleware"
 	"discord/writer"
 	"fmt"
@@ -120,7 +119,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	if strings.HasPrefix(message.Content, cmdPrefix) {
 		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)
 		args := strings.Split(cmdStr, " ")
-		cliApp := botcli.CreateCLI(os.Getenv("APP_NAME"), cmdPrefix)
+		cliApp := botCli.CreateCLI(os.Getenv("APP_NAME"), cmdPrefix)
 
 		writer := writer.CreateDiscordWriter(
 			session, message.ChannelID, os.Getenv("EOF_DELIM"))
@@ -129,47 +128,12 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		cliApp.Action = func(c *cli.Context) error {
 			return nil
 		}
-		cliApp.Commands = []cli.Command{
-			{
-				Name:  "anime",
-				Usage: "List anime commands",
-				Action: func(c *cli.Context) error {
-					cli.ShowCommandHelp(c, "anime")
-
-					return nil
-				},
-				Subcommands: cli.Commands{
-					cli.Command{
-						Name:  "profile",
-						Usage: "Displays a user's anime profile",
-						Flags: []cli.Flag{
-							cli.StringFlag{
-								Name:  "name, n",
-								Usage: "My Anime List Username",
-							},
-						},
-						Action: func(c *cli.Context) error {
-							userProfile, err := mal.GetProfile(c.String("name"))
-							if err != nil {
-								log.Panicln(err)
-								return nil
-							}
-							options := messageMal.CreateAnimeProfileEmbeddedOptions{
-								AnimeProfile: userProfile,
-							}
-							embeddedMessage := messageMal.CreateAnimeProfileEmbedded(
-								options)
-
-							_, error := session.ChannelMessageSendEmbed(message.ChannelID, embeddedMessage)
-							if error != nil {
-								log.Panic(error)
-							}
-							return nil
-						},
-					},
-				},
-			},
+		cliApp.Commands = []cli.Command{}
+		commandCB := func(result *discordgo.MessageEmbed) (*discordgo.Message, error) {
+			return session.ChannelMessageSendEmbed(message.ChannelID, result)
 		}
+
+		commands.AddAnimeCommands(cliApp, commandCB)
 
 		err := cliApp.Run(args)
 		if err != nil {
