@@ -1,14 +1,14 @@
 package mal
 
 import (
-	"cli/anime/mal/api"
+	"cli/anime/mal/api/response"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 type CreateAnimeProfileEmbeddedOptions struct {
-	AnimeProfile *api.UserProfileResponse
+	AnimeProfile *response.UserProfileResponse
 }
 
 func CreateAnimeProfileEmbedded(
@@ -95,5 +95,3 @@ func CreateAnimeProfileEmbedded(
 
 	return embed
 }
-
-// https://goo.gl/iCA3dR

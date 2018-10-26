@@ -1,4 +1,4 @@
-package api
+package response
 
 type AnimeCharacterResponse struct {
 	RequestHash        string   `json:"request_hash"`

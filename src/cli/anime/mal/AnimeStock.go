@@ -2,44 +2,69 @@ package mal
 
 import (
 	"cli/anime/mal/api"
-	"encoding/json"
 	"fmt"
 	"math"
-
-	"github.com/parnurzeal/gorequest"
 )
 
-type AnimeStock struct {
-	CharacterID int
-	AnimeID     int
-	OwnerID     string
+type animeStock struct {
+	name        string
+	imageURL    string
+	marketPrice float32
+	characterID int
+	animeID     int
 }
 
-type Stock interface {
-	GetMarketPrice() (float64, error)
+type AnimeStock interface {
+	Name() string
+	ImageURL() string
+	MarketPrice() float32
 }
 
-func (animeStock AnimeStock) GetMarketPrice() (float64, error) {
-	var animeURL = fmt.Sprintf("https://api.jikan.moe/v3/anime/%d/", animeStock.AnimeID)
-	_, animeResponseBody, errs := gorequest.New().Post(animeURL).End()
-	if errs != nil {
-		return -1, fmt.Errorf(
-			"Failed to retrieve MAL Anime with id: %d", animeStock.AnimeID)
+func (animeStock animeStock) Name() string {
+	return animeStock.name
+}
+
+func (animeStock animeStock) ImageURL() string {
+	return animeStock.imageURL
+}
+
+func (animeStock animeStock) MarketPrice() float32 {
+	return animeStock.marketPrice
+}
+
+func CreateAnimeStock(
+	characterID int,
+	animeID int,
+) (AnimeStock, error) {
+	animeResponse, err := api.GetAnime(animeID)
+	if err != nil {
+		return nil, fmt.Errorf(
+			fmt.Sprintf(
+				"Failed to create anime stock. Could not retrieve anime with id: %d",
+				animeID))
 	}
 
-	animeResponse := &api.AnimeResponse{}
-	json.Unmarshal([]byte(animeResponseBody), animeResponse)
-
-	var characterURL = fmt.Sprintf("https://api.jikan.moe/v3/character/%d/", animeStock.CharacterID)
-	_, characterResponseBody, errs := gorequest.New().Post(characterURL).End()
-	if errs != nil {
-		return -1, fmt.Errorf(
-			"Failed to retrieve MAL Character with id: %d", animeStock.CharacterID)
+	animeCharacter, err := api.GetAnimeCharacter(characterID)
+	if err != nil {
+		return nil, fmt.Errorf(
+			fmt.Sprintf(
+				"Failed to create anime stock. Could not retrieve character with id: %d",
+				characterID))
 	}
 
-	characterResponse := &api.AnimeCharacterResponse{}
-	json.Unmarshal([]byte(characterResponseBody), characterResponse)
+	favoritesPriceBonus := math.Log(
+		float64(animeCharacter.MemberFavorites)) / math.Log(10000.0)
+	marketPrice := animeResponse.Score + favoritesPriceBonus
 
-	price := animeResponse.Score + math.Log(float64(characterResponse.MemberFavorites))/math.Log(10000.0)
-	return price, nil
+	animeStock := &animeStock{
+		characterID: characterID,
+		animeID:     animeID,
+		marketPrice: float32(marketPrice),
+		name: fmt.Sprintf(
+			"%s-%s",
+			animeCharacter.Name,
+			animeResponse.TitleEnglish),
+		imageURL: animeCharacter.ImageURL,
+	}
+	return animeStock, nil
 }

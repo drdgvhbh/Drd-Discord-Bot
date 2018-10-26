@@ -4,7 +4,6 @@ import (
 	"cli/anime/mal"
 	"cli/anime/mal/api"
 	messageMal "discord/message/anime/mal"
-	"fmt"
 	"log"
 
 	"github.com/bwmarrin/discordgo"
@@ -81,27 +80,22 @@ var listAnimeCharacterStock = func(callback CommandCallback) realCli.Command {
 			animeID := c.Int("anime")
 			characterID := c.Int("character")
 
-			var animeStock = new(mal.AnimeStock)
-			animeStock.CharacterID = characterID
-			animeStock.AnimeID = animeID
-
-			price, err := animeStock.GetMarketPrice()
+			animeStock, err := mal.CreateAnimeStock(characterID, animeID)
 
 			if err != nil {
 				log.Println(err)
 				return nil
 			}
-			fmt.Printf("%f\n", price)
-			/* options := messageMal.CreateAnimeProfileEmbeddedOptions{
-				AnimeProfile: userProfile,
+
+			options := messageMal.AnimeStockQuoteEmbeddedOptions{
+				AnimeStock: animeStock,
 			}
-			embeddedMessage := messageMal.CreateAnimeProfileEmbedded(
-				options)
+			embeddedMessage := messageMal.CreateAnimeStockQuoteEmbedded(options)
 
 			_, error := callback(embeddedMessage)
 			if error != nil {
 				log.Println(err)
-			} */
+			}
 			return nil
 		},
 	}
