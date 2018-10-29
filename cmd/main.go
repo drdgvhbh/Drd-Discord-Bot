@@ -109,6 +109,13 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		return
 	}
 
+	authorID := message.Author.ID
+
+	channel, _ := session.Channel(message.ChannelID)
+	serverID, _ := session.Guild(channel.GuildID)
+
+	userID := fmt.Sprintf("%s-%s", serverID, authorID)
+
 	cmdPrefix := os.Getenv("CMD_PREFIX")
 	if strings.HasPrefix(message.Content, cmdPrefix) {
 		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)
@@ -129,7 +136,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 
 		commands.AddAnimeCommands(cliApp, commandCB)
 
-		user := entity.CreateUser("derping")
+		user := entity.CreateUser(userID)
 		registerUserCommand := di.InitializeRegisterUserCommandFactory(user).Construct()
 
 		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
