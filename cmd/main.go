@@ -137,8 +137,13 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 
 		commands.AddAnimeCommands(cliApp, commandCB)
 
+		sendChannelMessage := func(message string) {
+			session.ChannelMessageSend(channelID, message)
+		}
+
 		user := entity.CreateUser(userID)
-		registerUserCommand := di.InitializeRegisterUserCommandFactory(user).Construct()
+		registerUserCommand := di.InitializeRegisterUserCommandFactory(
+			user, sendChannelMessage).Construct()
 
 		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
 

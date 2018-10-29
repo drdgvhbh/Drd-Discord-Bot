@@ -43,6 +43,7 @@ func InitializeDiscordBot() *discordgo.Session {
 
 func InitializeRegisterUserCommandFactory(
 	user *entity.User,
+	write func(message string),
 ) *commands.RegisterUserCommandFactory {
-	return commands.CreateRegisterUserCommandFactory(InitializeUserRepository(), user)
+	return commands.CreateRegisterUserCommandFactory(InitializeUserRepository(), user, write)
 }
