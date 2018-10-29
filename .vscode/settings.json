@@ -1,0 +1,15 @@
+{
+  "go.autocompleteUnimportedPackages": true,
+  "go.formatTool": "goimports",
+  "go.buildOnSave": "package",
+  "cSpell.words": [
+    "Sdump",
+    "animes",
+    "postgres",
+    "uuid"
+  ],
+  "search.exclude": {
+    "**/github.com": true,
+    "**/golang.org": true,
+  },
+}
