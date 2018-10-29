@@ -28,7 +28,7 @@ func CreateUserRepository(
 	return userRepositoryInstance
 }
 
-func (userRepository UserRepository) InsertUser(user *entity.User) {
+func (userRepository UserRepository) InsertUser(user *entity.User) error {
 	db := userRepository.db
 	mapper := userRepository.mapper
 	dbUser := mapper.MapFrom(user)
@@ -41,11 +41,13 @@ func (userRepository UserRepository) InsertUser(user *entity.User) {
 	err := db.QueryRow(query).Scan()
 	if err != nil {
 		if err, ok := err.(*pq.Error); ok {
-			panic(fmt.Sprintf(
-				"Error: %s\nCode: %s\n%s\n",
+			return fmt.Errorf(
+				"error: %s\nCode: %s\n%s",
 				err.Error(),
 				err.Code,
-				spew.Sdump(user)))
+				spew.Sdump(user))
 		}
 	}
+
+	return nil
 }
