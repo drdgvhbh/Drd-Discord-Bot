@@ -1,7 +1,6 @@
 package main
 
 import (
-	botCli "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/cli/anime/mal/commands"
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
@@ -124,7 +123,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	if strings.HasPrefix(message.Content, cmdPrefix) {
 		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)
 		args := strings.Split(cmdStr, " ")
-		cliApp := botCli.CreateCLI(botCli.CreateConfig())
+		cliApp := di.InitializeCLI()
 
 		writer := writer.CreateDiscordWriter(
 			session, message.ChannelID, os.Getenv("EOF_DELIM"))

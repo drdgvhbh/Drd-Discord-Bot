@@ -12,7 +12,7 @@ import (
 
 var pgSet = wire.NewSet(pg.ProvideConfig, pg.ProvideConnector)
 
-var cliSet = wire.NewSet(cli.ProvideConfig)
+var cliSet = wire.NewSet(cli.ProvideConfig, cli.ProvideCLI)
 
 var userSet = wire.NewSet(
 	api.CreateUserRepository,
