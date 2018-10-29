@@ -21,6 +21,18 @@
 			"revisionTime": "2018-10-25T22:52:20Z"
 		},
 		{
+			"checksumSHA1": "lxYRnOGnsfvF1iFWHamFPgJKhYw=",
+			"path": "github.com/google/go-cloud/wire/cmd/wire",
+			"revision": "6d49472eda6b780504f0fc0e43599c0ac6bbf409",
+			"revisionTime": "2018-10-29T15:42:55Z"
+		},
+		{
+			"checksumSHA1": "kJMbDjjsqRflHnCmgM+DEzRBdMg=",
+			"path": "github.com/google/go-cloud/wire/internal/wire",
+			"revision": "6d49472eda6b780504f0fc0e43599c0ac6bbf409",
+			"revisionTime": "2018-10-29T15:42:55Z"
+		},
+		{
 			"checksumSHA1": "+WvAFQYdExJNUjKDAtuSs8O7ELg=",
 			"path": "github.com/gorilla/websocket",
 			"revision": "76e4896901ef89d253d69b528d3701dd146fe2ae",
@@ -103,7 +115,37 @@
 			"path": "golang.org/x/net/publicsuffix",
 			"revision": "9b4f9f5ad5197c79fd623a3638e70d8b26cef344",
 			"revisionTime": "2018-10-23T11:20:58Z"
+		},
+		{
+			"checksumSHA1": "4Im9wKzWtIB9dgTZv34B9YIpzak=",
+			"path": "golang.org/x/tools/go/ast/astutil",
+			"revision": "f60e5f99f0816fc2d9ecb338008ea420248d2943",
+			"revisionTime": "2018-10-23T19:13:28Z"
+		},
+		{
+			"checksumSHA1": "/UCuUGzk9/QJTUcTkYDRdCas3Tc=",
+			"path": "golang.org/x/tools/go/buildutil",
+			"revision": "f60e5f99f0816fc2d9ecb338008ea420248d2943",
+			"revisionTime": "2018-10-23T19:13:28Z"
+		},
+		{
+			"checksumSHA1": "VQ0sTJYKkzzAvWA6zvaKD5lar0o=",
+			"path": "golang.org/x/tools/go/internal/cgo",
+			"revision": "f60e5f99f0816fc2d9ecb338008ea420248d2943",
+			"revisionTime": "2018-10-23T19:13:28Z"
+		},
+		{
+			"checksumSHA1": "HbFgkv0we2VJZVnE9XNixVYQPic=",
+			"path": "golang.org/x/tools/go/loader",
+			"revision": "f60e5f99f0816fc2d9ecb338008ea420248d2943",
+			"revisionTime": "2018-10-23T19:13:28Z"
+		},
+		{
+			"checksumSHA1": "oT4r2iJVt4b9X0hqK2pN8qzAwoU=",
+			"path": "golang.org/x/tools/go/types/typeutil",
+			"revision": "f60e5f99f0816fc2d9ecb338008ea420248d2943",
+			"revisionTime": "2018-10-23T19:13:28Z"
 		}
 	],
-	"rootPath": "Drd-Discord-Bot/bot/src"
+	"rootPath": "drdgvhbh/discordbot"
 }
