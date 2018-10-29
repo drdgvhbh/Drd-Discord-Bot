@@ -19,14 +19,6 @@ func CreateCLI(
 	return App
 }
 
-var cliApp *CLIApp
-
 func ProvideCLI(config *Config) *CLIApp {
-	if cliApp != nil {
-		return cliApp
-	}
-
-	cliApp = CreateCLI(config)
-
-	return cliApp
+	return CreateCLI(config)
 }
