@@ -5,7 +5,6 @@ import (
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
-	"drdgvhbh/discordbot/internal/user/entity"
 	"fmt"
 	"log"
 	"os"
@@ -81,9 +80,6 @@ OPTIONS:
 }
 
 func main() {
-	userRepository, err := di.InitializeUserRepository()
-	userRepository.InsertUser(entity.CreateUser("sadafaf"))
-
 	botToken := os.Getenv("BOT_TOKEN")
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + botToken)
