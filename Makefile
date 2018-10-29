@@ -15,12 +15,11 @@ config:
 	$(SCRIPTS)/init.sh
 
 build:
-	wire ./internal/di
+	$(GOGEN) ./internal/di
 	$(GOBUILD) -o ${BIN}/$(BINARY_NAME) -v cmd/main.go
 
 run:
-	$(BINARY_NAME)
+	$(BIN)/$(BINARY_NAME)
 
 clean:
 	$(SCRIPTS)/clean.sh $(BINARY_NAME)
-	

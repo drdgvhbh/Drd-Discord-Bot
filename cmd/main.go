@@ -5,6 +5,7 @@ import (
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
+	"drdgvhbh/discordbot/internal/user/entity"
 	"fmt"
 	"log"
 	"os"
@@ -127,6 +128,11 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		}
 
 		commands.AddAnimeCommands(cliApp, commandCB)
+
+		user := entity.CreateUser("derping")
+		registerUserCommand := di.InitializeRegisterUserCommandFactory(user).Construct()
+
+		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
 
 		err := cliApp.Run(args)
 		if err != nil {
