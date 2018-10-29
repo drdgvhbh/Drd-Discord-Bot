@@ -1,9 +1,15 @@
 {
   "go.autocompleteUnimportedPackages": true,
   "go.formatTool": "goimports",
-  "go.inferGopath": true,
   "go.buildOnSave": "package",
-  "cSpell.words": ["animes"],
-  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
-  "terminal.integrated.shellArgs.windows": []
+  "cSpell.words": [
+    "Sdump",
+    "animes",
+    "postgres",
+    "uuid"
+  ],
+  "search.exclude": {
+    "**/github.com": true,
+    "**/golang.org": true,
+  },
 }

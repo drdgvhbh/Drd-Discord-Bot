@@ -1,0 +1,10 @@
+cat > .env <<- EOF
+CMD_PREFIX=
+BOT_TOKEN=
+
+DB_PORT=5432
+DB_HOST=localhost
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
+EOF
