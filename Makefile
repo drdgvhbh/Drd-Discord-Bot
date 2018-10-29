@@ -8,6 +8,7 @@ GOGEN=$(GOCMD) generate
 BIN=./bin
 SCRIPTS=./scripts
 BINARY_NAME=drdbot
+OUTPUT_NAME=$(BIN)/$(BINARY_NAME)
 
 .PHONY: config build run clean
 
@@ -15,11 +16,11 @@ config:
 	$(SCRIPTS)/init.sh
 
 build:
-	$(GOGEN) ./internal/di
-	$(GOBUILD) -o ${BIN}/$(BINARY_NAME) -v cmd/main.go
+	wire ./internal/di
+	$(GOBUILD) -o $(OUTPUT_NAME) -v cmd/main.go
 
 run:
-	$(BIN)/$(BINARY_NAME)
+	$(OUTPUT_NAME)
 
 clean:
 	$(SCRIPTS)/clean.sh $(BINARY_NAME)
