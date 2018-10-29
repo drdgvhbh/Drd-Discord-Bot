@@ -9,26 +9,23 @@ import (
 
 type RegisterUserCommandFactory struct {
 	userRepository domain.UserRepository
-	user           *entity.User
-	write          func(message string)
 }
 
 func CreateRegisterUserCommandFactory(
 	userRepository domain.UserRepository,
-	user *entity.User,
-	write func(message string),
 ) *RegisterUserCommandFactory {
 	return &RegisterUserCommandFactory{
 		userRepository: userRepository,
-		user:           user,
-		write:          write,
 	}
 }
 
-func (registerCommandFactory RegisterUserCommandFactory) Construct() *cli.Command {
-	write := registerCommandFactory.write
+func (
+	registerCommandFactory RegisterUserCommandFactory,
+) Construct(
+	user *entity.User,
+	write func(message string),
+) *cli.Command {
 	userRepository := registerCommandFactory.userRepository
-	user := registerCommandFactory.user
 
 	return &cli.Command{
 		Name:  "register",

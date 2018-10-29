@@ -11,7 +11,6 @@ import (
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
 	"drdgvhbh/discordbot/internal/user/api"
-	"drdgvhbh/discordbot/internal/user/entity"
 	"drdgvhbh/discordbot/internal/user/mapper"
 	"github.com/bwmarrin/discordgo"
 	"github.com/urfave/cli"
@@ -39,11 +38,11 @@ func InitializeDiscordBot() *discordgo.Session {
 	return session
 }
 
-// wire.go:
-
-func InitializeRegisterUserCommandFactory(
-	user *entity.User,
-	write func(message string),
-) *commands.RegisterUserCommandFactory {
-	return commands.CreateRegisterUserCommandFactory(InitializeUserRepository(), user, write)
+func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
+	config := pg.ProvideConfig()
+	db := pg.ProvideConnector(config)
+	userMapper := mapper.CreateUserMapper()
+	userRepository := api.CreateUserRepository(db, userMapper)
+	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
+	return registerUserCommandFactory
 }

@@ -142,8 +142,9 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		}
 
 		user := entity.CreateUser(userID)
-		registerUserCommand := di.InitializeRegisterUserCommandFactory(
-			user, sendChannelMessage).Construct()
+		registerUserCommand := di.InitializeRegisterUserCommandFactory().Construct(
+			user, sendChannelMessage,
+		)
 
 		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
 

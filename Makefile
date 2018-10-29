@@ -20,6 +20,12 @@ build:
 	$(GORUN) ./vendor/github.com/google/go-cloud/wire/cmd/wire ./internal/di
 	$(GOBUILD) -o $(OUTPUT_NAME) -v cmd/main.go
 
+docker-build:
+	docker-compose build
+
+docker-run:
+	docker-compose up
+
 run:
 	$(OUTPUT_NAME)
 

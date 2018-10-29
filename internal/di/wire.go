@@ -7,7 +7,6 @@ import (
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
 	"drdgvhbh/discordbot/internal/user/api"
-	"drdgvhbh/discordbot/internal/user/entity"
 
 	"github.com/google/go-cloud/wire"
 )
@@ -25,9 +24,6 @@ func InitializeDiscordBot() *bot.DiscordBot {
 	panic(wire.Build(RootSet))
 }
 
-func InitializeRegisterUserCommandFactory(
-	user *entity.User,
-	write func(message string),
-) *commands.RegisterUserCommandFactory {
-	return commands.CreateRegisterUserCommandFactory(InitializeUserRepository(), user, write)
+func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
+	panic(wire.Build(RootSet))
 }
