@@ -4,6 +4,7 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 GOGEN=$(GOCMD) generate
+GORUN=$(GOCMD) run
 
 BIN=./bin
 SCRIPTS=./scripts
@@ -16,7 +17,7 @@ config:
 	$(SCRIPTS)/init.sh
 
 build:
-	$(GOGEN) ./internal/di
+	$(GORUN) ./vendor/github.com/google/go-cloud/wire/cmd/wire ./internal/di
 	$(GOBUILD) -o $(OUTPUT_NAME) -v cmd/main.go
 
 run:
