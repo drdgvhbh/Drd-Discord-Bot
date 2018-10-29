@@ -23,4 +23,4 @@ run:
 	$(OUTPUT_NAME)
 
 clean:
-	$(SCRIPTS)/clean.sh $(BIN)
+	rm -r -f $(BIN)/*
