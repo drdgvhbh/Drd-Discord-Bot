@@ -83,7 +83,7 @@ OPTIONS:
 
 func main() {
 	userRepository, err := di.InitializeUserRepository()
-	userRepository.InsertUser(entity.CreateUser("derp"))
+	userRepository.InsertUser(entity.CreateUser("sadafaf"))
 
 	botToken := os.Getenv("BOT_TOKEN")
 	// Create a new Discord session using the provided bot token.

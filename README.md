@@ -2,7 +2,6 @@
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/en/)
 - [Go](https://golang.org/dl/)
 - [Make](http://gnuwin32.sourceforge.net/packages/make.htm)
 - [Discord](https://discordapp.com/)
@@ -11,10 +10,10 @@
 
 ```
 NAME:
-  ${APP_NAME} - A general purpose discord bot
+  Ruin and Grief Bot - General purpose bot for ruining and griefing
 
  USAGE:
-  ${CMD_PREFIX} [global options] command [command options] [arguments...]
+  !ruin [global options] command [command options] [arguments...]
 
  VERSION:
   0.0.0
@@ -41,29 +40,21 @@ NAME:
 
 1. Create a `.env` file in the root of your directory and fill it in with the following fields
 
-```
-APP_NAME=Drd Discord Bot
-CMD_PREFIX=!bot
-BOT_TOKEN=NTAxNzg4MTMzODY0NTA1MzY0.DqqyWg.oo42O3QuiUAzlT9aVOT4gJgh19Y
-EOF_DELIM=EOF
-```
-
-### Install Node packages
-
 ```sh
-npm install
-```
+CMD_PREFIX=
+BOT_TOKEN=
+EOF_DELIM=
 
-## Running
+DB_PORT=
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
 
-### Terminal 1
-
-```sh
-npm run watch
 ```
 
 ### Terminal 2
 
 ```sh
-./bin/DiscordBot.exe
+./bin/drdbot
 ```
