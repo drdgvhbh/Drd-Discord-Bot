@@ -20,3 +20,15 @@ func CreateConfig() *Config {
 		EOFDelim:  "EOF",
 	}
 }
+
+var config *Config
+
+func ProvideConfig() *Config {
+	if config != nil {
+		return config
+	}
+
+	config = CreateConfig()
+
+	return config
+}

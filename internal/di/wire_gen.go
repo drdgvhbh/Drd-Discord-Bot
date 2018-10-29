@@ -8,8 +8,10 @@ package di
 import (
 	cli2 "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/db/pg"
+	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/user/api"
 	"drdgvhbh/discordbot/internal/user/mapper"
+	"github.com/bwmarrin/discordgo"
 	"github.com/urfave/cli"
 )
 
@@ -27,4 +29,10 @@ func InitializeCLI() *cli.App {
 	config := cli2.ProvideConfig()
 	app := cli2.ProvideCLI(config)
 	return app
+}
+
+func InitializeDiscordBot() *discordgo.Session {
+	config := bot.ProvideConfig()
+	session := bot.ProvideDiscordBot(config)
+	return session
 }
