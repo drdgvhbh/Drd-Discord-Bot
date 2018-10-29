@@ -1,12 +1,12 @@
-version: '3'
-services: 
+version: "3"
+services:
   postgres:
     container_name: drd-discordbot-db
     hostname: ${DB_HOST}
     restart: always
     build: ./build/db
     ports:
-      - "5433:${DB_PORT}"
+      - ${DB_PORT}:5432
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -18,10 +18,9 @@ services:
     container_name: drd-discordbot
     links:
       - postgres
-    depends_on: 
+    depends_on:
       - postgres
-    environment: 
-      - WAIT_HOSTS=${DB_HOST}:${DB_PORT}
-volumes: 
-  pgdata:
-
+    environment:
+      - WAIT_HOSTS=${DB_HOST}:5432
+volumes:
+  ? pgdata
