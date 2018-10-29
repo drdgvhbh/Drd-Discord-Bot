@@ -110,9 +110,10 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	}
 
 	authorID := message.Author.ID
+	channelID := message.ChannelID
 
-	channel, _ := session.Channel(message.ChannelID)
-	serverID, _ := session.Guild(channel.GuildID)
+	channel, _ := session.Channel(channelID)
+	serverID := channel.GuildID
 
 	userID := fmt.Sprintf("%s-%s", serverID, authorID)
 
