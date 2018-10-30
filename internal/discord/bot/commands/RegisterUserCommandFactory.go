@@ -31,8 +31,16 @@ func (
 		Name:  "register",
 		Usage: "Registers a user for this bot's services on a Discord service",
 		Action: func(ctx *cli.Context) error {
-			userRepository.InsertUser(user)
-			write("You are now registered.")
+			err := userRepository.InsertUser(user)
+			if err != nil {
+				if _, ok := err.(*domain.UserAlreadyExistsError); ok {
+					write("You are already registered!")
+				} else {
+					return err
+				}
+			} else {
+				write("You are now registered.")
+			}
 
 			return nil
 		},
