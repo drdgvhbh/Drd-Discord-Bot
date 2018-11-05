@@ -12,6 +12,8 @@ import (
 
 type CommandCallback = func(output *discordgo.MessageEmbed) (*discordgo.Message, error)
 
+var undefinedFlag = -1
+
 func AddAnimeCommands(
 	cli *realCli.App,
 	callback CommandCallback,
@@ -70,15 +72,23 @@ var listAnimeCharacterStock = func(callback CommandCallback) realCli.Command {
 			realCli.IntFlag{
 				Name:  "anime, a",
 				Usage: "Anime ID",
+				Value: undefinedFlag,
 			},
 			realCli.IntFlag{
 				Name:  "character, c",
 				Usage: "Character ID",
+				Value: undefinedFlag,
 			},
 		},
-		Action: func(c *realCli.Context) error {
-			animeID := c.Int("anime")
-			characterID := c.Int("character")
+		Action: func(context *realCli.Context) error {
+			animeID := context.Int("anime")
+			characterID := context.Int("character")
+
+			if animeID == undefinedFlag || characterID == undefinedFlag {
+				realCli.ShowCommandHelp(context, "quote")
+
+				return nil
+			}
 
 			animeStock, err := mal.CreateAnimeStock(characterID, animeID)
 
