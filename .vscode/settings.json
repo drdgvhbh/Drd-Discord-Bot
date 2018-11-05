@@ -1,6 +1,6 @@
 {
   "go.autocompleteUnimportedPackages": true,
-  "go.formatTool": "goimports",
+  "go.formatTool": "goreturns",
   "go.buildOnSave": "package",
   "cSpell.words": [
     "Sdump",

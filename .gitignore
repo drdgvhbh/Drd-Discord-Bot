@@ -171,3 +171,4 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/go,node,macos,linux,windows,visualstudiocode
 bin
+scratch

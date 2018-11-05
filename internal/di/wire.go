@@ -5,14 +5,15 @@ package di
 import (
 	"drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/discord/bot"
+	"drdgvhbh/discordbot/internal/discord/bot/commands"
 	"drdgvhbh/discordbot/internal/user/api"
 
 	"github.com/google/go-cloud/wire"
 )
 
-func InitializeUserRepository() (*api.UserRepository, error) {
+func InitializeUserRepository() *api.UserRepository {
 	wire.Build(RootSet)
-	return &api.UserRepository{}, nil
+	return &api.UserRepository{}
 }
 
 func InitializeCLI() *cli.CLIApp {
@@ -20,5 +21,9 @@ func InitializeCLI() *cli.CLIApp {
 }
 
 func InitializeDiscordBot() *bot.DiscordBot {
+	panic(wire.Build(RootSet))
+}
+
+func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
 	panic(wire.Build(RootSet))
 }

@@ -5,6 +5,7 @@ import (
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
+	"drdgvhbh/discordbot/internal/user/entity"
 	"fmt"
 	"log"
 	"os"
@@ -108,6 +109,14 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		return
 	}
 
+	authorID := message.Author.ID
+	channelID := message.ChannelID
+
+	channel, _ := session.Channel(channelID)
+	serverID := channel.GuildID
+
+	userID := fmt.Sprintf("%s-%s", serverID, authorID)
+
 	cmdPrefix := os.Getenv("CMD_PREFIX")
 	if strings.HasPrefix(message.Content, cmdPrefix) {
 		cmdStr := strings.TrimPrefix(message.Content, cmdPrefix)
@@ -127,6 +136,24 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		}
 
 		commands.AddAnimeCommands(cliApp, commandCB)
+
+		sendChannelMessage := func(msg string) {
+			session.ChannelMessageSend(
+				channelID,
+				msg)
+		}
+
+		sendChannelMessageWithAuthorMention := func(msg string) {
+			sendChannelMessage(fmt.Sprintf(
+				"%s %s", message.Author.Mention(), msg))
+		}
+
+		user := entity.CreateUser(userID)
+		registerUserCommand := di.InitializeRegisterUserCommandFactory().Construct(
+			user, sendChannelMessageWithAuthorMention,
+		)
+
+		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
 
 		err := cliApp.Run(args)
 		if err != nil {

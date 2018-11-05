@@ -9,6 +9,7 @@ import (
 	cli2 "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/discord/bot"
+	"drdgvhbh/discordbot/internal/discord/bot/commands"
 	"drdgvhbh/discordbot/internal/user/api"
 	"drdgvhbh/discordbot/internal/user/mapper"
 	"github.com/bwmarrin/discordgo"
@@ -17,12 +18,12 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeUserRepository() (*api.UserRepository, error) {
+func InitializeUserRepository() *api.UserRepository {
 	config := pg.ProvideConfig()
 	db := pg.ProvideConnector(config)
 	userMapper := mapper.CreateUserMapper()
 	userRepository := api.CreateUserRepository(db, userMapper)
-	return userRepository, nil
+	return userRepository
 }
 
 func InitializeCLI() *cli.App {
@@ -35,4 +36,13 @@ func InitializeDiscordBot() *discordgo.Session {
 	config := bot.ProvideConfig()
 	session := bot.ProvideDiscordBot(config)
 	return session
+}
+
+func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
+	config := pg.ProvideConfig()
+	db := pg.ProvideConnector(config)
+	userMapper := mapper.CreateUserMapper()
+	userRepository := api.CreateUserRepository(db, userMapper)
+	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
+	return registerUserCommandFactory
 }
