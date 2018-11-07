@@ -56,3 +56,6 @@
 [[constraint]]
   name = "github.com/thoas/go-funk"
   version = "0.4.0"
+
+[[constraint]]
+  name = "github.com/google/go-cloud"
