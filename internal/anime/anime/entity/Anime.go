@@ -3,6 +3,7 @@ package entity
 type Anime struct {
 	id    string
 	title string
+	score float64
 }
 
 func (anime Anime) ID() string {
@@ -13,9 +14,14 @@ func (anime Anime) Title() string {
 	return anime.title
 }
 
-func CreateAnime(id string, title string) *Anime {
+func (anime Anime) Score() float64 {
+	return anime.score
+}
+
+func CreateAnime(id string, title string, score float64) *Anime {
 	return &Anime{
 		id:    id,
 		title: title,
+		score: score,
 	}
 }

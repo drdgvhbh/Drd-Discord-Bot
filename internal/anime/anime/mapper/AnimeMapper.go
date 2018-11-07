@@ -30,5 +30,6 @@ func (animeMapper AnimeMapper) MapTo(
 	return entity.CreateAnime(
 		strconv.Itoa(anime.MalID),
 		anime.Title,
+		anime.Score,
 	)
 }

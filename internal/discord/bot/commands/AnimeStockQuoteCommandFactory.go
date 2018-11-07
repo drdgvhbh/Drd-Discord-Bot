@@ -4,6 +4,7 @@ import (
 	animeDomain "drdgvhbh/discordbot/internal/anime/anime/domain"
 	characterDomain "drdgvhbh/discordbot/internal/anime/character/domain"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -76,7 +77,9 @@ func (
 				return characterError
 			}
 
-			marketPrice := 100.0
+			marketPrice := func(score float64) float64 {
+				return (math.Pow(score, 3.0) + math.Pow(score, 2.0)) + score
+			}
 
 			writeEmbed(&discordgo.MessageEmbed{
 				Title:       fmt.Sprintf("%s (%s)", characters[0].Name(), animes[0].Title()),
@@ -85,7 +88,7 @@ func (
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:   "Price",
-						Value:  fmt.Sprintf("%.4f", marketPrice),
+						Value:  fmt.Sprintf("%.4f", marketPrice(animes[0].Score())),
 						Inline: true,
 					},
 				},
