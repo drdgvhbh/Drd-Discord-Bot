@@ -33,3 +33,7 @@ func InitializeDiscordBot() *bot.DiscordBot {
 func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
 	panic(wire.Build(RootSet))
 }
+
+func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
+	panic(wire.Build(RootSet))
+}

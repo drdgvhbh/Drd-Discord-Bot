@@ -44,8 +44,8 @@ func (
 		"https://api.jikan.moe/v3/search/character/?q=%s&page=1",
 		name)
 
-	_, searchCharacterResponseBody, errs := gorequest.New().Get(endpoint).End()
-	if errs != nil {
+	response, searchCharacterResponseBody, errs := gorequest.New().Get(endpoint).End()
+	if response.StatusCode != 200 || errs != nil {
 		return nil, fmt.Errorf(
 			"Failed to find any anime character with name: %s", name)
 	}

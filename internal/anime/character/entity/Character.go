@@ -10,7 +10,7 @@ func (character Character) ID() string {
 }
 
 func (character Character) Name() string {
-	return character.Name()
+	return character.name
 }
 
 func CreateCharacter(id string, name string) *Character {

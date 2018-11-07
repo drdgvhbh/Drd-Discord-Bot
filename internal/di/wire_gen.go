@@ -54,3 +54,10 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
 	return registerUserCommandFactory
 }
+
+func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
+	characterMapper := mapper2.ProvideCharacterMapper()
+	characterRepository := api2.ProvideCharacterRepository(characterMapper)
+	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository)
+	return animeStockQuoteCommandFactory
+}

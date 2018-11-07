@@ -28,7 +28,7 @@ func AddAnimeCommands(
 		},
 		Subcommands: realCli.Commands{
 			getAnimeProfileCommand(callback),
-			listAnimeCharacterStock(callback),
+			/* 			listAnimeCharacterStock(callback), */
 		},
 	})
 }

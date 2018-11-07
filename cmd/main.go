@@ -149,11 +149,16 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		}
 
 		user := entity.CreateUser(userID)
-		registerUserCommand := di.InitializeRegisterUserCommandFactory().Construct(
-			user, sendChannelMessageWithAuthorMention,
-		)
 
-		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
+		cliApp.Commands = append(
+			cliApp.Commands,
+			*di.InitializeRegisterUserCommandFactory().Construct(
+				user, sendChannelMessageWithAuthorMention,
+			),
+			*di.InitializeAnimeStockQuoteCommandFactory().Construct(
+				sendChannelMessageWithAuthorMention,
+			),
+		)
 
 		err := cliApp.Run(args)
 		if err != nil {
