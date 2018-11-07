@@ -1,6 +1,9 @@
 package di
 
 import (
+	animeApi "drdgvhbh/discordbot/internal/anime/anime/api"
+	animeDomain "drdgvhbh/discordbot/internal/anime/anime/domain"
+	animeMapper "drdgvhbh/discordbot/internal/anime/anime/mapper"
 	characterApi "drdgvhbh/discordbot/internal/anime/character/api"
 	characterDomain "drdgvhbh/discordbot/internal/anime/character/domain"
 	characterMapper "drdgvhbh/discordbot/internal/anime/character/mapper"
@@ -32,6 +35,13 @@ var userSet = wire.NewSet(
 	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepository)),
 	wire.Bind(new(userApi.UserMapper), new(userMapper.UserMapper)))
 
+var animeSet = wire.NewSet(
+	animeApi.ProvideAnimeRepository,
+	animeMapper.ProvideAnimeMapper,
+	wire.Bind(new(animeDomain.AnimeRepository), new(animeApi.AnimeRepository)),
+	wire.Bind(new(animeApi.AnimeMapper), new(animeMapper.AnimeMapper)),
+)
+
 var characterSet = wire.NewSet(
 	characterApi.ProvideCharacterRepository,
 	characterMapper.ProvideCharacterMapper,
@@ -39,4 +49,7 @@ var characterSet = wire.NewSet(
 	wire.Bind(new(characterApi.CharacterMapper), new(characterMapper.CharacterMapper)),
 )
 
-var RootSet = wire.NewSet(pgSet, cliSet, botSet, commandSet, characterSet, userSet)
+var RootSet = wire.NewSet(
+	pgSet, cliSet, botSet,
+	commandSet, characterSet, animeSet,
+	userSet)

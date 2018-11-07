@@ -24,7 +24,7 @@ func ProvideCharacterMapper() *CharacterMapper {
 	return characterMapper
 }
 
-func (characterMappper CharacterMapper) MapTo(
+func (characterMapper CharacterMapper) MapTo(
 	character *api.Character,
 ) *entity.Character {
 	return entity.CreateCharacter(

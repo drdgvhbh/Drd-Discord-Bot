@@ -21,18 +21,18 @@ func CreateCharacterRepository(
 	}
 }
 
-var characterMapper *CharacterRepository
+var characterRepository *CharacterRepository
 
 func ProvideCharacterRepository(
 	mapper CharacterMapper,
 ) *CharacterRepository {
-	if characterMapper != nil {
-		return characterMapper
+	if characterRepository != nil {
+		return characterRepository
 	}
 
-	characterMapper := CreateCharacterRepository(mapper)
+	characterRepository = CreateCharacterRepository(mapper)
 
-	return characterMapper
+	return characterRepository
 }
 
 func (

@@ -6,6 +6,8 @@
 package di
 
 import (
+	api3 "drdgvhbh/discordbot/internal/anime/anime/api"
+	mapper3 "drdgvhbh/discordbot/internal/anime/anime/mapper"
 	api2 "drdgvhbh/discordbot/internal/anime/character/api"
 	mapper2 "drdgvhbh/discordbot/internal/anime/character/mapper"
 	cli2 "drdgvhbh/discordbot/internal/cli"
@@ -58,6 +60,8 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
 	characterMapper := mapper2.ProvideCharacterMapper()
 	characterRepository := api2.ProvideCharacterRepository(characterMapper)
-	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository)
+	animeMapper := mapper3.ProvideAnimeMapper()
+	animeRepository := api3.ProvideAnimeRepository(animeMapper)
+	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository, animeRepository)
 	return animeStockQuoteCommandFactory
 }
