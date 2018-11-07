@@ -6,6 +6,8 @@
 package di
 
 import (
+	api2 "drdgvhbh/discordbot/internal/anime/character/api"
+	mapper2 "drdgvhbh/discordbot/internal/anime/character/mapper"
 	cli2 "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/discord/bot"
@@ -24,6 +26,12 @@ func InitializeUserRepository() *api.UserRepository {
 	userMapper := mapper.CreateUserMapper()
 	userRepository := api.CreateUserRepository(db, userMapper)
 	return userRepository
+}
+
+func InitializeCharacterRepository() *api2.CharacterRepository {
+	characterMapper := mapper2.ProvideCharacterMapper()
+	characterRepository := api2.ProvideCharacterRepository(characterMapper)
+	return characterRepository
 }
 
 func InitializeCLI() *cli.App {

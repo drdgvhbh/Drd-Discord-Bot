@@ -21,6 +21,20 @@ func CreateCharacterRepository(
 	}
 }
 
+var characterMapper *CharacterRepository
+
+func ProvideCharacterRepository(
+	mapper CharacterMapper,
+) *CharacterRepository {
+	if characterMapper != nil {
+		return characterMapper
+	}
+
+	characterMapper := CreateCharacterRepository(mapper)
+
+	return characterMapper
+}
+
 func (
 	characterRepository CharacterRepository,
 ) SearchCharactersByName(

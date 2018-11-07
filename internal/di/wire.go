@@ -3,17 +3,23 @@
 package di
 
 import (
+	characterApi "drdgvhbh/discordbot/internal/anime/character/api"
 	"drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
-	"drdgvhbh/discordbot/internal/user/api"
+	userApi "drdgvhbh/discordbot/internal/user/api"
 
 	"github.com/google/go-cloud/wire"
 )
 
-func InitializeUserRepository() *api.UserRepository {
+func InitializeUserRepository() *userApi.UserRepository {
 	wire.Build(RootSet)
-	return &api.UserRepository{}
+	return &userApi.UserRepository{}
+}
+
+func InitializeCharacterRepository() *characterApi.CharacterRepository {
+	wire.Build(RootSet)
+	return &characterApi.CharacterRepository{}
 }
 
 func InitializeCLI() *cli.CLIApp {
