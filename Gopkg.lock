@@ -17,9 +17,10 @@
   revision = "d8f796af33cc11cb798c1aaeb27a4ebc5099927d"
 
 [[projects]]
-  digest = "1:2246590cbc5c256a7dafd2879c6106ad0992b24e3cea6e1ec470f42b5ba01505"
+  digest = "1:6b31f07e94866306687219712fc79ed2b4efb5b8ede173e1f89c843dde5babde"
   name = "github.com/google/go-cloud"
   packages = [
+    "wire",
     "wire/cmd/wire",
     "wire/internal/wire"
   ]
@@ -151,7 +152,7 @@
     "go/types/typeutil"
   ]
   pruneopts = "UT"
-  revision = "78dc5bac0cacea7969e98b79c3b86597e0aa4e25"
+  revision = "e21233ffa6c386fc230b4328493f77af54ff9372"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -159,6 +160,7 @@
   input-imports = [
     "github.com/bwmarrin/discordgo",
     "github.com/davecgh/go-spew/spew",
+    "github.com/google/go-cloud/wire",
     "github.com/google/go-cloud/wire/cmd/wire",
     "github.com/joho/godotenv/autoload",
     "github.com/lib/pq",

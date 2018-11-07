@@ -24,6 +24,7 @@
 #   go-tests = true
 #   unused-packages = true
 
+required = ["github.com/google/go-cloud/wire/cmd/wire"]
 
 [[constraint]]
   branch = "master"
