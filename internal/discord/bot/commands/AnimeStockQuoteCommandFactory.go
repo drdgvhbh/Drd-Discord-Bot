@@ -4,7 +4,9 @@ import (
 	animeDomain "drdgvhbh/discordbot/internal/anime/anime/domain"
 	characterDomain "drdgvhbh/discordbot/internal/anime/character/domain"
 	"fmt"
+	"time"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/urfave/cli"
 )
 
@@ -35,6 +37,7 @@ func (
 	animeStockQuoteCommandFactory AnimeStockQuoteCommandFactory,
 ) Construct(
 	write func(message string),
+	writeEmbed func(message *discordgo.MessageEmbed),
 ) *cli.Command {
 	animeCharacterRepository := animeStockQuoteCommandFactory.animeCharacterRepository
 	animeRepository := animeStockQuoteCommandFactory.animeRepository
@@ -72,8 +75,22 @@ func (
 				write(fmt.Sprintf("Failed to get quote for %s", animeCharacterName))
 				return characterError
 			}
-			write(characters[0].Name())
-			write(animes[0].Title())
+
+			marketPrice := 100.0
+
+			writeEmbed(&discordgo.MessageEmbed{
+				Title:       fmt.Sprintf("%s (%s)", characters[0].Name(), animes[0].Title()),
+				Description: "Stock Quote",
+				Color:       0xFFFFCC,
+				Fields: []*discordgo.MessageEmbedField{
+					&discordgo.MessageEmbedField{
+						Name:   "Price",
+						Value:  fmt.Sprintf("%.4f", marketPrice),
+						Inline: true,
+					},
+				},
+				Timestamp: time.Now().Format(time.RFC3339),
+			})
 
 			return nil
 		},

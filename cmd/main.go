@@ -148,6 +148,10 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 				"%s %s", message.Author.Mention(), msg))
 		}
 
+		sendChannelMessageEmbed := func(msg *discordgo.MessageEmbed) {
+			session.ChannelMessageSendEmbed(channelID, msg)
+		}
+
 		user := entity.CreateUser(userID)
 
 		cliApp.Commands = append(
@@ -156,7 +160,8 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 				user, sendChannelMessageWithAuthorMention,
 			),
 			*di.InitializeAnimeStockQuoteCommandFactory().Construct(
-				sendChannelMessageWithAuthorMention,
+				sendChannelMessage,
+				sendChannelMessageEmbed,
 			),
 		)
 
