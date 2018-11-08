@@ -24,9 +24,9 @@ import (
 
 func InitializeUserRepository() *api.UserRepository {
 	config := pg.ProvideConfig()
-	db := pg.ProvideConnector(config)
+	connector := pg.ProvideConnector(config)
 	userMapper := mapper.CreateUserMapper()
-	userRepository := api.CreateUserRepository(db, userMapper)
+	userRepository := api.ProvideUserRepository(connector, userMapper)
 	return userRepository
 }
 
@@ -50,9 +50,9 @@ func InitializeDiscordBot() *discordgo.Session {
 
 func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
 	config := pg.ProvideConfig()
-	db := pg.ProvideConnector(config)
+	connector := pg.ProvideConnector(config)
 	userMapper := mapper.CreateUserMapper()
-	userRepository := api.CreateUserRepository(db, userMapper)
+	userRepository := api.ProvideUserRepository(connector, userMapper)
 	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
 	return registerUserCommandFactory
 }

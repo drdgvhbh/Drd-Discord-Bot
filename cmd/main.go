@@ -150,7 +150,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			session.ChannelMessageSendEmbed(channelID, msg)
 		}
 
-		user := entity.CreateUser(userID)
+		user := entity.CreateUser(userID, 1000.0)
 
 		cliApp.Commands = append(
 			cliApp.Commands,

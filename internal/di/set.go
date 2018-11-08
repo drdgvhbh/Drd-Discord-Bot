@@ -31,7 +31,7 @@ var commandSet = wire.NewSet(
 )
 
 var userSet = wire.NewSet(
-	userApi.CreateUserRepository,
+	userApi.ProvideUserRepository,
 	userMapper.CreateUserMapper,
 	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepository)),
 	wire.Bind(new(userApi.UserMapper), new(userMapper.UserMapper)))

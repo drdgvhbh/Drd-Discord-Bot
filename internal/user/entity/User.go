@@ -1,15 +1,21 @@
 package entity
 
 type User struct {
-	id string
+	id     string
+	tokens float64
 }
 
 func (user User) ID() string {
 	return user.id
 }
 
-func CreateUser(id string) *User {
+func (user User) Tokens() float64 {
+	return user.tokens
+}
+
+func CreateUser(id string, startingTokens float64) *User {
 	return &User{
-		id: id,
+		id:     id,
+		tokens: startingTokens,
 	}
 }

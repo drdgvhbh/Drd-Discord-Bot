@@ -12,21 +12,28 @@ import (
 )
 
 type UserRepository struct {
-	db     *pg.Connector
+	db     pg.Connector
 	mapper UserMapper
+}
+
+func CreateUserRepository(
+	db pg.Connector,
+	mapper UserMapper,
+) *UserRepository {
+	return &UserRepository{db, mapper}
 }
 
 var userRepositoryInstance *UserRepository
 
-func CreateUserRepository(
-	db *pg.Connector,
+func ProvideUserRepository(
+	db pg.Connector,
 	mapper UserMapper,
 ) *UserRepository {
 	if userRepositoryInstance != nil {
 		return userRepositoryInstance
 	}
 
-	userRepositoryInstance = &UserRepository{db, mapper}
+	userRepositoryInstance = CreateUserRepository(db, mapper)
 	return userRepositoryInstance
 }
 
@@ -35,10 +42,10 @@ func (userRepository UserRepository) InsertUser(user *entity.User) error {
 	mapper := userRepository.mapper
 	dbUser := mapper.MapFrom(user)
 
-	query := fmt.Sprintf(`INSERT INTO users(id)
+	query := fmt.Sprintf(`INSERT INTO users(id, tokens)
 	VALUES 
-		('%s');
-	`, dbUser.ID)
+		('%s', %f);
+	`, dbUser.ID, dbUser.Tokens)
 
 	err := db.QueryRow(query).Scan()
 	if err != nil {
