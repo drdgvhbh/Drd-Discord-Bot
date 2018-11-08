@@ -29,5 +29,8 @@ docker-run:
 run:
 	$(OUTPUT_NAME)
 
+watch:
+	realize start
+
 clean:
 	rm -r -f $(BIN)/*
