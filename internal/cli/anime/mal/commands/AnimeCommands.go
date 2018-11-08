@@ -11,27 +11,7 @@ import (
 
 type CommandCallback = func(output *discordgo.MessageEmbed) (*discordgo.Message, error)
 
-var undefinedFlag = -1
-
-func AddAnimeCommands(
-	cli *realCli.App,
-	callback CommandCallback,
-) {
-	cli.Commands = append(cli.Commands, realCli.Command{
-		Name:  "anime",
-		Usage: "List anime commands",
-		Action: func(c *realCli.Context) error {
-			realCli.ShowCommandHelp(c, "anime")
-
-			return nil
-		},
-		Subcommands: realCli.Commands{
-			getAnimeProfileCommand(callback),
-		},
-	})
-}
-
-var getAnimeProfileCommand = func(callback CommandCallback) realCli.Command {
+var GetAnimeProfileCommand = func(callback CommandCallback) realCli.Command {
 	return realCli.Command{
 		Name:  "profile",
 		Usage: "Displays a user's anime profile",
