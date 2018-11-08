@@ -9,6 +9,8 @@ import (
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
 	userApi "drdgvhbh/discordbot/internal/user/api"
 
+	nativeCli "github.com/urfave/cli"
+
 	"github.com/google/go-cloud/wire"
 )
 
@@ -36,4 +38,10 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 
 func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
 	panic(wire.Build(RootSet))
+}
+
+func InitializeAnimeCommand(
+	subCommands []nativeCli.Command,
+) *nativeCli.Command {
+	return commands.ProvideAnimeCommand(subCommands)
 }

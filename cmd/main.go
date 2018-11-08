@@ -1,7 +1,6 @@
 package main
 
 import (
-	"drdgvhbh/discordbot/internal/cli/anime/mal/commands"
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
@@ -131,11 +130,11 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			return nil
 		}
 		cliApp.Commands = []cli.Command{}
-		commandCB := func(result *discordgo.MessageEmbed) (*discordgo.Message, error) {
+		/* 		commandCB := func(result *discordgo.MessageEmbed) (*discordgo.Message, error) {
 			return session.ChannelMessageSendEmbed(message.ChannelID, result)
-		}
+		} */
 
-		commands.AddAnimeCommands(cliApp, commandCB)
+		// commands.AddAnimeCommands(cliApp, commandCB)
 
 		sendChannelMessage := func(msg string) {
 			session.ChannelMessageSend(
@@ -159,10 +158,12 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			*di.InitializeRegisterUserCommandFactory().Construct(
 				user, sendChannelMessageWithAuthorMention,
 			),
-			*di.InitializeAnimeStockQuoteCommandFactory().Construct(
-				sendChannelMessage,
-				sendChannelMessageEmbed,
-			),
+			*di.InitializeAnimeCommand([]cli.Command{
+				*di.InitializeAnimeStockQuoteCommandFactory().Construct(
+					sendChannelMessage,
+					sendChannelMessageEmbed,
+				),
+			}),
 		)
 
 		err := cliApp.Run(args)

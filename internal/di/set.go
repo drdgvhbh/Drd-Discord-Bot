@@ -27,6 +27,7 @@ var botSet = wire.NewSet(bot.ProvideConfig, bot.ProvideDiscordBot)
 var commandSet = wire.NewSet(
 	commands.CreateRegisterUserCommandFactory,
 	commands.ProvideAnimeStockQuoteCommandFactory,
+	commands.ProvideAnimeCommand,
 )
 
 var userSet = wire.NewSet(

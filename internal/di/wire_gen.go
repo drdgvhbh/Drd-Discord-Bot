@@ -65,3 +65,11 @@ func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandF
 	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository, animeRepository)
 	return animeStockQuoteCommandFactory
 }
+
+// wire.go:
+
+func InitializeAnimeCommand(
+	subCommands []cli.Command,
+) *cli.Command {
+	return commands.ProvideAnimeCommand(subCommands)
+}

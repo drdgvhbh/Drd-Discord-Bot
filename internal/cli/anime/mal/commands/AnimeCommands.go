@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"drdgvhbh/discordbot/internal/cli/anime/mal"
 	"drdgvhbh/discordbot/internal/cli/anime/mal/api"
 	messageMal "drdgvhbh/discordbot/internal/discord/message/anime/mal"
 	"log"
@@ -28,7 +27,6 @@ func AddAnimeCommands(
 		},
 		Subcommands: realCli.Commands{
 			getAnimeProfileCommand(callback),
-			/* 			listAnimeCharacterStock(callback), */
 		},
 	})
 }
@@ -54,53 +52,6 @@ var getAnimeProfileCommand = func(callback CommandCallback) realCli.Command {
 			}
 			embeddedMessage := messageMal.CreateAnimeProfileEmbedded(
 				options)
-
-			_, error := callback(embeddedMessage)
-			if error != nil {
-				log.Println(err)
-			}
-			return nil
-		},
-	}
-}
-
-var listAnimeCharacterStock = func(callback CommandCallback) realCli.Command {
-	return realCli.Command{
-		Name:  "quote",
-		Usage: "Gets a stock price listing for an anime + anime character pair",
-		Flags: []realCli.Flag{
-			realCli.IntFlag{
-				Name:  "anime, a",
-				Usage: "Anime ID",
-				Value: undefinedFlag,
-			},
-			realCli.IntFlag{
-				Name:  "character, c",
-				Usage: "Character ID",
-				Value: undefinedFlag,
-			},
-		},
-		Action: func(context *realCli.Context) error {
-			animeID := context.Int("anime")
-			characterID := context.Int("character")
-
-			if animeID == undefinedFlag || characterID == undefinedFlag {
-				realCli.ShowCommandHelp(context, "quote")
-
-				return nil
-			}
-
-			animeStock, err := mal.CreateAnimeStock(characterID, animeID)
-
-			if err != nil {
-				log.Println(err)
-				return nil
-			}
-
-			options := messageMal.AnimeStockQuoteEmbeddedOptions{
-				AnimeStock: animeStock,
-			}
-			embeddedMessage := messageMal.CreateAnimeStockQuoteEmbedded(options)
 
 			_, error := callback(embeddedMessage)
 			if error != nil {
