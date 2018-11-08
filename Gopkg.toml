@@ -24,7 +24,7 @@
 #   go-tests = true
 #   unused-packages = true
 
-required = ["github.com/google/go-cloud/wire/cmd/wire"]
+required = ["github.com/google/go-cloud/wire/cmd/wire", "github.com/vektra/mockery"]
 
 [[constraint]]
   branch = "master"
@@ -60,3 +60,7 @@ required = ["github.com/google/go-cloud/wire/cmd/wire"]
 
 [[constraint]]
   name = "github.com/google/go-cloud"
+
+[[constraint]]
+  name = "github.com/stretchr/testify"
+  version = "1.1.4"

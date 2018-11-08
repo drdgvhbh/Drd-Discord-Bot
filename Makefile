@@ -26,6 +26,13 @@ docker-build:
 docker-run:
 	docker-compose up
 
+test:
+	go test ./...
+
+cover: 
+	go test ./.../... -coverprofile=cover.out
+	go tool cover -html=cover.out -o cover.html
+
 run:
 	$(OUTPUT_NAME)
 

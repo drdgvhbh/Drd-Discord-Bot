@@ -81,6 +81,22 @@
   revision = "059132a15dd08d6704c67711dae0cf35ab991756"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  pruneopts = "UT"
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:25f2747b063c0a656195ef85413cef8c9f2bbe128deab7d39563a6ca1e536070"
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  pruneopts = "UT"
+  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
+  version = "v1.1.4"
+
+[[projects]]
   digest = "1:d1816f8f4877e87cf0a80a25fbc0e7c7a6937bd728ccbf85e2c151c792445a1b"
   name = "github.com/thoas/go-funk"
   packages = ["."]
@@ -94,6 +110,14 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "934abfb2f102315b5794e15ebc7949e4ca253920"
+
+[[projects]]
+  branch = "master"
+  digest = "1:1378ebd451fe372493ba42b4ef5ef5d5f09392ebf947a5d15f5a693e7ea4bc74"
+  name = "github.com/vektra/mockery"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ea265755d541b124de6bc248f7744eab9005fd33"
 
 [[projects]]
   digest = "1:a68068595227881a09dd5961976ddf705c8eea822dcd1c7b57bbb0067335ad32"
@@ -166,8 +190,10 @@
     "github.com/lib/pq",
     "github.com/parnurzeal/gorequest",
     "github.com/pkg/errors",
+    "github.com/stretchr/testify/assert",
     "github.com/thoas/go-funk",
-    "github.com/urfave/cli"
+    "github.com/urfave/cli",
+    "github.com/vektra/mockery"
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
