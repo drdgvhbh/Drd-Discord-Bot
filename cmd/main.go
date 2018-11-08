@@ -135,8 +135,6 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			return session.ChannelMessageSendEmbed(message.ChannelID, result)
 		}
 
-		commands.AddAnimeCommands(cliApp, commandCB)
-
 		sendChannelMessage := func(msg string) {
 			session.ChannelMessageSend(
 				channelID,
@@ -148,12 +146,25 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 				"%s %s", message.Author.Mention(), msg))
 		}
 
-		user := entity.CreateUser(userID)
-		registerUserCommand := di.InitializeRegisterUserCommandFactory().Construct(
-			user, sendChannelMessageWithAuthorMention,
-		)
+		sendChannelMessageEmbed := func(msg *discordgo.MessageEmbed) {
+			session.ChannelMessageSendEmbed(channelID, msg)
+		}
 
-		cliApp.Commands = append(cliApp.Commands, *registerUserCommand)
+		user := entity.CreateUser(userID)
+
+		cliApp.Commands = append(
+			cliApp.Commands,
+			*di.InitializeRegisterUserCommandFactory().Construct(
+				user, sendChannelMessageWithAuthorMention,
+			),
+			*di.InitializeAnimeCommand([]cli.Command{
+				*di.InitializeAnimeStockQuoteCommandFactory().Construct(
+					sendChannelMessage,
+					sendChannelMessageEmbed,
+				),
+				commands.GetAnimeProfileCommand(commandCB),
+			}),
+		)
 
 		err := cliApp.Run(args)
 		if err != nil {

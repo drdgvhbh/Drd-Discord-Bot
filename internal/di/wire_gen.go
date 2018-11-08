@@ -6,6 +6,10 @@
 package di
 
 import (
+	api3 "drdgvhbh/discordbot/internal/anime/anime/api"
+	mapper3 "drdgvhbh/discordbot/internal/anime/anime/mapper"
+	api2 "drdgvhbh/discordbot/internal/anime/character/api"
+	mapper2 "drdgvhbh/discordbot/internal/anime/character/mapper"
 	cli2 "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/discord/bot"
@@ -24,6 +28,12 @@ func InitializeUserRepository() *api.UserRepository {
 	userMapper := mapper.CreateUserMapper()
 	userRepository := api.CreateUserRepository(db, userMapper)
 	return userRepository
+}
+
+func InitializeCharacterRepository() *api2.CharacterRepository {
+	characterMapper := mapper2.ProvideCharacterMapper()
+	characterRepository := api2.ProvideCharacterRepository(characterMapper)
+	return characterRepository
 }
 
 func InitializeCLI() *cli.App {
@@ -45,4 +55,21 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 	userRepository := api.CreateUserRepository(db, userMapper)
 	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
 	return registerUserCommandFactory
+}
+
+func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
+	characterMapper := mapper2.ProvideCharacterMapper()
+	characterRepository := api2.ProvideCharacterRepository(characterMapper)
+	animeMapper := mapper3.ProvideAnimeMapper()
+	animeRepository := api3.ProvideAnimeRepository(animeMapper)
+	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository, animeRepository)
+	return animeStockQuoteCommandFactory
+}
+
+// wire.go:
+
+func InitializeAnimeCommand(
+	subCommands []cli.Command,
+) *cli.Command {
+	return commands.ProvideAnimeCommand(subCommands)
 }

@@ -3,17 +3,25 @@
 package di
 
 import (
+	characterApi "drdgvhbh/discordbot/internal/anime/character/api"
 	"drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
-	"drdgvhbh/discordbot/internal/user/api"
+	userApi "drdgvhbh/discordbot/internal/user/api"
+
+	nativeCli "github.com/urfave/cli"
 
 	"github.com/google/go-cloud/wire"
 )
 
-func InitializeUserRepository() *api.UserRepository {
+func InitializeUserRepository() *userApi.UserRepository {
 	wire.Build(RootSet)
-	return &api.UserRepository{}
+	return &userApi.UserRepository{}
+}
+
+func InitializeCharacterRepository() *characterApi.CharacterRepository {
+	wire.Build(RootSet)
+	return &characterApi.CharacterRepository{}
 }
 
 func InitializeCLI() *cli.CLIApp {
@@ -26,4 +34,14 @@ func InitializeDiscordBot() *bot.DiscordBot {
 
 func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory {
 	panic(wire.Build(RootSet))
+}
+
+func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
+	panic(wire.Build(RootSet))
+}
+
+func InitializeAnimeCommand(
+	subCommands []nativeCli.Command,
+) *nativeCli.Command {
+	return commands.ProvideAnimeCommand(subCommands)
 }
