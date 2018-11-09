@@ -33,6 +33,10 @@ cover:
 	go test ./.../... -coverprofile=cover.out
 	go tool cover -html=cover.out -o cover.html
 
+pipeline:
+	make build
+	make cover
+
 run:
 	$(OUTPUT_NAME)
 

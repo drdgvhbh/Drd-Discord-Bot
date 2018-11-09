@@ -18,4 +18,4 @@ schema:
         - ./internal/di/wire_gen.go
       scripts:
         - type: after
-          command: make build
+          command: make pipeline
