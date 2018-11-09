@@ -27,21 +27,25 @@ docker-run:
 	docker-compose up
 
 test:
-	go test ./...
+	gorc test
 
-cover: 
+cover:
 	go test ./.../... -coverprofile=cover.out
 	go tool cover -html=cover.out -o cover.html
 
 pipeline:
 	make build
 	make cover
+	make test
 
 run:
 	$(OUTPUT_NAME)
 
 watch:
 	realize start
+
+install:
+	dep ensure
 
 clean:
 	rm -r -f $(BIN)/*
