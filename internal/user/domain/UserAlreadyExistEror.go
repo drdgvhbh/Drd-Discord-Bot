@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-type UserAlreadyExistsError struct {
+type DuplicateUserInsertion struct {
 	user *entity.User
 }
 
-func (userAlreadyExistsError UserAlreadyExistsError) Error() string {
+func (duplicateUserInsertion DuplicateUserInsertion) Error() string {
 	return fmt.Sprintf(
-		"user with id  %s already exists",
-		userAlreadyExistsError.user.ID())
+		"user with id  %s has already been inserted",
+		duplicateUserInsertion.user.ID())
 }

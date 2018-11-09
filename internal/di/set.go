@@ -34,7 +34,7 @@ var userSet = wire.NewSet(
 	userApi.ProvideUserRepository,
 	userMapper.CreateUserMapper,
 	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepository)),
-	wire.Bind(new(userApi.UserMapper), new(userMapper.UserMapper)))
+	wire.Bind(new(userApi.UserDataTransferMapper), new(userMapper.UserDataTransferMapper)))
 
 var animeSet = wire.NewSet(
 	animeApi.ProvideAnimeRepository,

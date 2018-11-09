@@ -33,7 +33,7 @@ func (
 		Action: func(ctx *cli.Context) error {
 			err := userRepository.InsertUser(user)
 			if err != nil {
-				if _, ok := err.(*domain.UserAlreadyExistsError); ok {
+				if _, ok := err.(*domain.DuplicateUserInsertion); ok {
 					write("You are already registered!")
 				} else {
 					return err

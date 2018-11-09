@@ -12,51 +12,50 @@ import (
 )
 
 type UserRepository struct {
-	db     pg.Connector
-	mapper UserMapper
+	databaseConnector      pg.Connector
+	userDataTransferMapper UserDataTransferMapper
 }
 
 func CreateUserRepository(
-	db pg.Connector,
-	mapper UserMapper,
-) *UserRepository {
-	return &UserRepository{db, mapper}
+	databaseConnector pg.Connector,
+	userDataTransferMapper UserDataTransferMapper) *UserRepository {
+	return &UserRepository{databaseConnector, userDataTransferMapper}
 }
 
-var userRepositoryInstance *UserRepository
+var userRepositorySingleton *UserRepository
 
 func ProvideUserRepository(
-	db pg.Connector,
-	mapper UserMapper,
-) *UserRepository {
-	if userRepositoryInstance != nil {
-		return userRepositoryInstance
+	databaseConnector pg.Connector,
+	userDataTransferMapper UserDataTransferMapper) *UserRepository {
+	if userRepositorySingleton != nil {
+		return userRepositorySingleton
 	}
 
-	userRepositoryInstance = CreateUserRepository(db, mapper)
-	return userRepositoryInstance
+	userRepositorySingleton = CreateUserRepository(databaseConnector, userDataTransferMapper)
+	return userRepositorySingleton
 }
 
 func (userRepository UserRepository) InsertUser(user *entity.User) error {
-	db := userRepository.db
-	mapper := userRepository.mapper
-	dbUser := mapper.MapFrom(user)
+	databaseConnector := userRepository.databaseConnector
+	userDataTransferMapper := userRepository.userDataTransferMapper
 
-	query := fmt.Sprintf(`INSERT INTO users(id, tokens)
+	userDTO := userDataTransferMapper.CreateDTOFrom(user)
+
+	insertUserQuery := fmt.Sprintf(`INSERT INTO users(id, tokens)
 	VALUES 
 		('%s', %f);
-	`, dbUser.ID, dbUser.Tokens)
+	`, userDTO.ID, userDTO.Tokens)
 
-	err := db.QueryRow(query).Scan()
-	if err != nil {
-		if err, ok := err.(*pq.Error); ok {
-			switch err.Code.Name() {
+	insertUserError := databaseConnector.QueryRow(insertUserQuery).Scan()
+	if insertUserError != nil {
+		if insertUserPGError, isPGError := insertUserError.(*pq.Error); isPGError {
+			switch insertUserPGError.Code.Name() {
 			case "unique_violation":
-				return &domain.UserAlreadyExistsError{}
+				return &domain.DuplicateUserInsertion{}
 			default:
 				log.Fatalf("Error: %s\nCode: %s\n%s\n",
-					err.Error(),
-					err.Code,
+					insertUserPGError.Error(),
+					insertUserPGError.Code,
 					spew.Sdump(user))
 			}
 		}
