@@ -5,6 +5,8 @@ import (
 	"drdgvhbh/discordbot/mocks"
 	"testing"
 
+	"github.com/stretchr/testify/mock"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -41,4 +43,17 @@ func (provider *provider) TestShouldBeASingleton() {
 
 func TestProviderSuite(t *testing.T) {
 	suite.Run(t, new(provider))
+}
+
+type insertion struct {
+	suite.Suite
+}
+
+func (
+	insertion *insertion,
+) TestShouldReturnDuplicateUserInsertionWhenThereIsAUniqueViolation() {
+	/* 	insertedRow := */
+
+	databaseConnector := &mocks.Connector{}
+	databaseConnector.Mock.On("Insert User", mock.Anything)
 }
