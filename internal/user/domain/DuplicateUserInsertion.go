@@ -9,8 +9,16 @@ type DuplicateUserInsertion struct {
 	user *entity.User
 }
 
+func CreateDuplicateUserInsertionError(
+	user *entity.User,
+) DuplicateUserInsertion {
+	return DuplicateUserInsertion{
+		user,
+	}
+}
+
 func (duplicateUserInsertion DuplicateUserInsertion) Error() string {
 	return fmt.Sprintf(
-		"user with id  %s has already been inserted",
+		"user %s has already been inserted",
 		duplicateUserInsertion.user.ID())
 }
