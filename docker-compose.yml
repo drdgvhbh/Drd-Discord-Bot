@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - /srv/docker/postgresql:/var/lib/postgresql/data
   bot:
     build: .
     container_name: drd-discordbot
@@ -22,5 +22,3 @@ services:
       - postgres
     environment:
       - WAIT_HOSTS=postgres:5432
-volumes:
-  - pgdata
