@@ -6,22 +6,39 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-func TestConstructorShouldNotBeASingleton(t *testing.T) {
-	assert := assert.New(t)
-
-	instance := api.CreateUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
-	nextInstance := api.CreateUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
-
-	assert.False(instance == nextInstance, "Both instance pointers should not be equal")
+type constructor struct {
+	suite.Suite
 }
 
-func TestProvidesShouldBeASingleton(t *testing.T) {
-	assert := assert.New(t)
+func (constructor *constructor) TestShouldNotBeASingleton() {
+	assert := assert.New(constructor.T())
 
-	instance := api.ProvideUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
-	nextInstance := api.ProvideUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
+	userRepository := api.CreateUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
+	anotherUserRepository := api.CreateUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
 
-	assert.True(instance == nextInstance, "Both instance pointers should be equal")
+	assert.True(userRepository != anotherUserRepository)
+}
+
+func TestConstructorSuite(t *testing.T) {
+	suite.Run(t, new(constructor))
+}
+
+type provider struct {
+	suite.Suite
+}
+
+func (provider *provider) TestShouldBeASingleton() {
+	assert := assert.New(provider.T())
+
+	userRepository := api.ProvideUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
+	anotherUserRepository := api.ProvideUserRepository(&mocks.Connector{}, &mocks.UserDataTransferMapper{})
+
+	assert.True(userRepository == anotherUserRepository)
+}
+
+func TestProviderSuite(t *testing.T) {
+	suite.Run(t, new(provider))
 }
