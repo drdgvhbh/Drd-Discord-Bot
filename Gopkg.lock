@@ -54,6 +54,14 @@
   revision = "c0b86d615e06d6fa5f869364d68f774ba49a86e3"
 
 [[projects]]
+  digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
+
+[[projects]]
   branch = "master"
   digest = "1:7cefc4f7f6a411c2598d3344563e4d23fd4e4d88fd1591831fe39cccff41ad28"
   name = "github.com/lib/pq"
@@ -95,6 +103,17 @@
   pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
+
+[[projects]]
+  digest = "1:05aaa4aafcc339843489e731d3b223efc537bbf2eddbb57ded586064baaee260"
+  name = "github.com/sirupsen/logrus"
+  packages = [
+    ".",
+    "hooks/test"
+  ]
+  pruneopts = "UT"
+  revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
+  version = "v1.2.0"
 
 [[projects]]
   digest = "1:c4c32a83d578f72af47d2541ca9006982fab0078523ebbf1e96f296d424a1526"
@@ -149,13 +168,14 @@
   revision = "ea265755d541b124de6bc248f7744eab9005fd33"
 
 [[projects]]
-  digest = "1:a68068595227881a09dd5961976ddf705c8eea822dcd1c7b57bbb0067335ad32"
+  digest = "1:207d2e280e7a43845b12d07437538d22d02dbd4c274b49f3940bb3dce2ed70d7"
   name = "golang.org/x/crypto"
   packages = [
     "internal/subtle",
     "nacl/secretbox",
     "poly1305",
-    "salsa20/salsa"
+    "salsa20/salsa",
+    "ssh/terminal"
   ]
   pruneopts = "UT"
   revision = "e84da0312774c21d64ee2317962ef669b27ffb41"
@@ -169,6 +189,17 @@
   ]
   pruneopts = "UT"
   revision = "9b4f9f5ad5197c79fd623a3638e70d8b26cef344"
+
+[[projects]]
+  branch = "master"
+  digest = "1:6a875550c3b582f6c2d7e2ce44aba792511f00016d7c46b0a4fb26f730ef3058"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  pruneopts = "UT"
+  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -220,6 +251,8 @@
     "github.com/lib/pq",
     "github.com/parnurzeal/gorequest",
     "github.com/pkg/errors",
+    "github.com/sirupsen/logrus",
+    "github.com/sirupsen/logrus/hooks/test",
     "github.com/stretchr/gorc",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
