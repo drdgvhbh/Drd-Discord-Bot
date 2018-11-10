@@ -8,15 +8,8 @@ import (
 type UserDataTransferMapper struct {
 }
 
-var userMapperInstance *UserDataTransferMapper
-
 func CreateUserMapper() *UserDataTransferMapper {
-	if userMapperInstance != nil {
-		return userMapperInstance
-	}
-	userMapperInstance = &UserDataTransferMapper{}
-
-	return userMapperInstance
+	return &UserDataTransferMapper{}
 }
 
 func (userDataTransferMapper UserDataTransferMapper) CreateUserFrom(user *api.User) *entity.User {
