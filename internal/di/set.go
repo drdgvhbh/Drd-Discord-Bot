@@ -24,6 +24,8 @@ var cliSet = wire.NewSet(cli.ProvideConfig, cli.ProvideCLI)
 
 var botSet = wire.NewSet(bot.ProvideConfig, bot.ProvideDiscordBot)
 
+var loggerSet = wire.NewSet(ProvideLogger)
+
 var commandSet = wire.NewSet(
 	commands.CreateRegisterUserCommandFactory,
 	commands.ProvideAnimeStockQuoteCommandFactory,
@@ -31,9 +33,11 @@ var commandSet = wire.NewSet(
 )
 
 var userSet = wire.NewSet(
+	loggerSet,
 	userApi.ProvideUserRepository,
+	ProvideUserRepositoryLogger,
 	userMapper.CreateUserMapper,
-	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepository)),
+	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepositoryLogger)),
 	wire.Bind(new(userApi.UserDataTransferMapper), new(userMapper.UserDataTransferMapper)))
 
 var animeSet = wire.NewSet(

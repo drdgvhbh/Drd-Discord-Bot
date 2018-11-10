@@ -53,7 +53,9 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 	connector := pg.ProvideConnector(config)
 	userDataTransferMapper := mapper.CreateUserMapper()
 	userRepository := api.ProvideUserRepository(connector, userDataTransferMapper)
-	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepository)
+	logrusLogger := ProvideLogger()
+	userRepositoryLogger := ProvideUserRepositoryLogger(userRepository, logrusLogger)
+	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepositoryLogger)
 	return registerUserCommandFactory
 }
 
