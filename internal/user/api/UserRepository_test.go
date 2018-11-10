@@ -56,7 +56,7 @@ func TestUserRepositoryProviderSuite(t *testing.T) {
 	suite.Run(t, new(userRepositoryProvider))
 }
 
-type insertion struct {
+type userRepositoryInsertion struct {
 	suite.Suite
 	userDataTransferMapper *mocks.UserDataTransferMapper
 	databaseConnector      *mocks.Connector
@@ -64,7 +64,7 @@ type insertion struct {
 	userRepository         *api.UserRepository
 }
 
-func (insertion *insertion) SetupTest() {
+func (insertion *userRepositoryInsertion) SetupTest() {
 	insertion.userDataTransferMapper = &mocks.UserDataTransferMapper{}
 	insertion.userDataTransferMapper.Mock.On(
 		"CreateDTOFrom",
@@ -84,7 +84,7 @@ func (insertion *insertion) SetupTest() {
 }
 
 func (
-	insertion *insertion,
+	insertion *userRepositoryInsertion,
 ) TestShouldReturnDuplicateUserInsertionWhenThereIsAUniqueViolation() {
 	assert := assert.New(insertion.T())
 	insertionError := &pq.Error{
@@ -105,7 +105,9 @@ func (
 	}
 }
 
-func (insertion *insertion) TestShouldNotHaveAnErrorUponSuccessfulInsertion() {
+func (
+	insertion *userRepositoryInsertion,
+) TestShouldNotHaveAnErrorUponSuccessfulInsertion() {
 	assert := assert.New(insertion.T())
 
 	insertedRow := insertion.insertedRow
@@ -119,7 +121,9 @@ func (insertion *insertion) TestShouldNotHaveAnErrorUponSuccessfulInsertion() {
 	assert.Nil(err)
 }
 
-func (insertion *insertion) TestShouldReturnOriginalPGErrorIfDoesNotHandleIt() {
+func (
+	insertion *userRepositoryInsertion,
+) TestShouldReturnOriginalPGErrorIfDoesNotHandleIt() {
 	assert := assert.New(insertion.T())
 
 	const INTERNAL_ERROR_CODE = "XX000"
@@ -140,5 +144,5 @@ func (insertion *insertion) TestShouldReturnOriginalPGErrorIfDoesNotHandleIt() {
 }
 
 func TestUserRepositoryInsertSuite(t *testing.T) {
-	suite.Run(t, new(insertion))
+	suite.Run(t, new(userRepositoryInsertion))
 }

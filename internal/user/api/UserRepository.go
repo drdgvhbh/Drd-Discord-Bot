@@ -43,15 +43,15 @@ func (userRepository UserRepository) InsertUser(user *entity.User) error {
 
 	userDTO := userDataTransferMapper.CreateDTOFrom(user)
 
-	insertUserQuery := fmt.Sprintf(
-		`INSERT INTO users(id, tokens)
-			VALUES
-				('%s', %f);
-		`,
+	insertUserQuery := fmt.Sprintf(`INSERT INTO users(id, tokens)
+		VALUES
+			('%s', %f);
+	`,
 		userDTO.ID,
 		userDTO.Tokens)
 
 	insertUserError := databaseConnector.QueryRow(insertUserQuery).Scan()
+
 	if insertUserError != nil {
 		if insertUserPGError, isPGError := insertUserError.(*pq.Error); isPGError {
 			switch insertUserPGError.Code.Name() {
