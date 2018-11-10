@@ -8,10 +8,10 @@ type Connector interface {
 	QueryRow(query string, args ...interface{}) Row
 }
 
-type databaseImp struct {
+type connectorImp struct {
 	db *sql.DB
 }
 
-func (db databaseImp) QueryRow(query string, args ...interface{}) Row {
-	return db.QueryRow(query, args)
+func (connector connectorImp) QueryRow(query string, args ...interface{}) Row {
+	return connector.db.QueryRow(query, args...)
 }

@@ -8,8 +8,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-var connectorInstance Connector
-
 func CreateConnector(cfg *Config) Connector {
 	db, err := sql.Open("postgres", fmt.Sprintf(
 		"user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
@@ -29,8 +27,10 @@ func CreateConnector(cfg *Config) Connector {
 		panic(err)
 	}
 
-	return databaseImp{db}
+	return connectorImp{db}
 }
+
+var connectorInstance Connector
 
 func ProvideConnector(cfg *Config) Connector {
 	if connectorInstance != nil {
