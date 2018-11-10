@@ -3,6 +3,7 @@ package commands
 import (
 	"drdgvhbh/discordbot/internal/user/domain"
 	"drdgvhbh/discordbot/internal/user/entity"
+	"log"
 
 	"github.com/urfave/cli"
 )
@@ -32,11 +33,12 @@ func (
 		Usage: "Registers a user for this bot's services on a Discord service",
 		Action: func(ctx *cli.Context) error {
 			err := userRepository.InsertUser(user)
+
 			if err != nil {
 				if _, ok := err.(*domain.DuplicateUserInsertion); ok {
 					write("You are already registered!")
 				} else {
-					return err
+					log.Fatalln(err)
 				}
 			} else {
 				write("You are now registered.")
