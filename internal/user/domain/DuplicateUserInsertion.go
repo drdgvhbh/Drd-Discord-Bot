@@ -19,6 +19,6 @@ func CreateDuplicateUserInsertionError(
 
 func (duplicateUserInsertion DuplicateUserInsertion) Error() string {
 	return fmt.Sprintf(
-		"user %s has already been inserted",
+		"User %s has already been inserted",
 		duplicateUserInsertion.user.ID())
 }

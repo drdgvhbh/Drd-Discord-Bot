@@ -22,7 +22,7 @@ func (errorMessage *errorMessage) TestExplainsWhichUserHasBeenAlreadyInserted() 
 	duplicateUserInsertionError := domain.CreateDuplicateUserInsertionError(user)
 	assert.Equal(
 		duplicateUserInsertionError.Error(),
-		fmt.Sprintf("user %s has already been inserted", id))
+		fmt.Sprintf("User %s has already been inserted", id))
 }
 
 func TestErrorMessageSuite(t *testing.T) {
