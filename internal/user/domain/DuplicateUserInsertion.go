@@ -11,8 +11,8 @@ type DuplicateUserInsertion struct {
 
 func CreateDuplicateUserInsertionError(
 	user *entity.User,
-) DuplicateUserInsertion {
-	return DuplicateUserInsertion{
+) *DuplicateUserInsertion {
+	return &DuplicateUserInsertion{
 		user,
 	}
 }
