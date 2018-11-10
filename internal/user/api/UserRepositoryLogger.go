@@ -23,19 +23,19 @@ func (
 	userRepositoryLogger UserRepositoryLogger,
 ) InsertUser(user *entity.User) error {
 	decoratedUserRepository := userRepositoryLogger.decoratedUserRepository
+	logger := userRepositoryLogger.logger
 
-	userRepositoryLogger.logger.WithFields(log.Fields{
+	logger.WithFields(log.Fields{
 		"id":     user.ID(),
 		"tokens": user.Tokens(),
-	}).Debug("Inserting user")
+	}).Debug("Inserting new user into repository")
 
 	insertionError := decoratedUserRepository.InsertUser(user)
 
-	/* 	if insertionError != nil {
-		log.Fatalf("Error: %s\nCode: n%s\n",
-			insertionError.Error(),
-			spew.Sdump(user))
-	} */
+	if insertionError != nil {
+		logger.WithError(insertionError).Error(
+			"Failed to insert new user into repository")
+	}
 
 	return insertionError
 }

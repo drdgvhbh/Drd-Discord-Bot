@@ -105,11 +105,38 @@ func (
 
 	assert.Condition(func() bool { return len(loggerHook.Entries) >= 1 })
 	assert.Equal(log.DebugLevel, loggerHook.LastEntry().Level)
-	assert.Equal("Inserting user", loggerHook.LastEntry().Message)
+	assert.Equal(
+		"Inserting new user into repository",
+		loggerHook.LastEntry().Message)
 	assert.Equal(log.Fields{
 		"id":     user.ID(),
 		"tokens": user.Tokens(),
 	}, loggerHook.LastEntry().Data)
+}
+func (
+	testSuite *userRepositoryLoggerInsertion,
+) TestShouldLogInsertionErrors() {
+	assert := assert.New(testSuite.T())
+
+	logger := testSuite.logger
+	loggerHook := testSuite.loggerHook
+
+	userRepository := &mocks.UserRepository{}
+	userRepositoryLogger := api.CreateUserRepositoryLogger(
+		userRepository,
+		logger)
+	user := &entity.User{}
+
+	insertionError := errors.New("Insertion Error")
+	userRepository.Mock.On("InsertUser", user).Return(insertionError)
+
+	userRepositoryLogger.InsertUser(user)
+
+	assert.Condition(func() bool { return len(loggerHook.Entries) >= 2 })
+	assert.Equal(log.ErrorLevel, loggerHook.LastEntry().Level)
+	assert.Equal(
+		"Failed to insert new user into repository",
+		loggerHook.LastEntry().Message)
 }
 
 func TestUserRepositoryLoggerInsertionSuite(t *testing.T) {
