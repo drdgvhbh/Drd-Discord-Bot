@@ -14,7 +14,9 @@ func ProvideLogger() *logrus.Logger {
 	}
 
 	logger = logrus.New()
-	logger.SetFormatter(&logrus.TextFormatter{})
+	logger.SetFormatter(&logrus.TextFormatter{
+		DisableLevelTruncation: true,
+	})
 	logger.SetOutput(os.Stdout)
 	logger.SetLevel(logrus.DebugLevel)
 
