@@ -34,7 +34,7 @@ var commandSet = wire.NewSet(
 
 var userSet = wire.NewSet(
 	loggerSet,
-	userApi.ProvideUserRepository,
+	ProvideUserRepository,
 	ProvideUserRepositoryLogger,
 	userMapper.CreateUserMapper,
 	wire.Bind(new(userDomain.UserRepository), new(userApi.UserRepositoryLogger)),

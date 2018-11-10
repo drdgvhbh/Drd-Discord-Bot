@@ -21,22 +21,6 @@ func CreateUserRepository(
 	return &UserRepository{databaseConnector, userDataTransferMapper}
 }
 
-var userRepositorySingleton *UserRepository
-
-func ProvideUserRepository(
-	databaseConnector pg.Connector,
-	userDataTransferMapper UserDataTransferMapper,
-) *UserRepository {
-	if userRepositorySingleton != nil {
-		return userRepositorySingleton
-	}
-
-	userRepositorySingleton = CreateUserRepository(
-		databaseConnector,
-		userDataTransferMapper)
-	return userRepositorySingleton
-}
-
 func (userRepository UserRepository) InsertUser(user *entity.User) error {
 	databaseConnector := userRepository.databaseConnector
 	userDataTransferMapper := userRepository.userDataTransferMapper

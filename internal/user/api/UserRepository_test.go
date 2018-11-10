@@ -14,48 +14,6 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type userRepositoryConstructor struct {
-	suite.Suite
-}
-
-func (constructor *userRepositoryConstructor) TestShouldNotBeASingleton() {
-	assert := assert.New(constructor.T())
-
-	userRepository := api.CreateUserRepository(
-		&mocks.Connector{},
-		&mocks.UserDataTransferMapper{})
-	anotherUserRepository := api.CreateUserRepository(
-		&mocks.Connector{},
-		&mocks.UserDataTransferMapper{})
-
-	assert.True(userRepository != anotherUserRepository)
-}
-
-func TestUserRepositoryConstructorSuite(t *testing.T) {
-	suite.Run(t, new(userRepositoryConstructor))
-}
-
-type userRepositoryProvider struct {
-	suite.Suite
-}
-
-func (provider *userRepositoryProvider) TestShouldBeASingleton() {
-	assert := assert.New(provider.T())
-
-	userRepository := api.ProvideUserRepository(
-		&mocks.Connector{},
-		&mocks.UserDataTransferMapper{})
-	anotherUserRepository := api.ProvideUserRepository(
-		&mocks.Connector{},
-		&mocks.UserDataTransferMapper{})
-
-	assert.True(userRepository == anotherUserRepository)
-}
-
-func TestUserRepositoryProviderSuite(t *testing.T) {
-	suite.Run(t, new(userRepositoryProvider))
-}
-
 type userRepositoryInsertion struct {
 	suite.Suite
 	userDataTransferMapper *mocks.UserDataTransferMapper

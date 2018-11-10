@@ -26,7 +26,7 @@ func InitializeUserRepository() *api.UserRepository {
 	config := pg.ProvideConfig()
 	connector := pg.ProvideConnector(config)
 	userDataTransferMapper := mapper.CreateUserMapper()
-	userRepository := api.ProvideUserRepository(connector, userDataTransferMapper)
+	userRepository := ProvideUserRepository(connector, userDataTransferMapper)
 	return userRepository
 }
 
@@ -52,7 +52,7 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 	config := pg.ProvideConfig()
 	connector := pg.ProvideConnector(config)
 	userDataTransferMapper := mapper.CreateUserMapper()
-	userRepository := api.ProvideUserRepository(connector, userDataTransferMapper)
+	userRepository := ProvideUserRepository(connector, userDataTransferMapper)
 	logrusLogger := ProvideLogger()
 	userRepositoryLogger := ProvideUserRepositoryLogger(userRepository, logrusLogger)
 	registerUserCommandFactory := commands.CreateRegisterUserCommandFactory(userRepositoryLogger)
