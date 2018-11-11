@@ -1,8 +1,8 @@
 package api
 
 import (
+	"drdgvhbh/discordbot/internal/entity"
 	"drdgvhbh/discordbot/internal/user/domain"
-	"drdgvhbh/discordbot/internal/user/entity"
 
 	log "github.com/sirupsen/logrus"
 )

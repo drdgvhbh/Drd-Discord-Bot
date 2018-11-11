@@ -5,7 +5,7 @@ import (
 	"drdgvhbh/discordbot/internal/di"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
-	"drdgvhbh/discordbot/internal/user/entity"
+	"drdgvhbh/discordbot/internal/entity"
 	"fmt"
 	"log"
 	"os"
@@ -150,7 +150,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			session.ChannelMessageSendEmbed(channelID, msg)
 		}
 
-		user := entity.CreateUser(userID, 1000.0)
+		user := entity.NewUser(userID, 1000.0)
 
 		cliApp.Commands = append(
 			cliApp.Commands,

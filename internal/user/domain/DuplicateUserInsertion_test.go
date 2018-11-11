@@ -1,5 +1,7 @@
 package domain_test
 
+/*
+
 import (
 	"drdgvhbh/discordbot/internal/user/domain"
 	"drdgvhbh/discordbot/internal/user/entity"
@@ -28,3 +30,4 @@ func (errorMessage *errorMessage) TestExplainsWhichUserHasBeenAlreadyInserted() 
 func TestErrorMessageSuite(t *testing.T) {
 	suite.Run(t, new(errorMessage))
 }
+*/

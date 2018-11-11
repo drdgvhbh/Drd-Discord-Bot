@@ -1,7 +1,7 @@
-package domain
+package repository
 
 import (
-	"drdgvhbh/discordbot/internal/anime/anime/entity"
+	"drdgvhbh/discordbot/internal/entity"
 )
 
 type AnimeRepository interface {

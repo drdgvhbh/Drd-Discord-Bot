@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"drdgvhbh/discordbot/internal/user/entity"
+	"drdgvhbh/discordbot/internal/entity"
 	"fmt"
 )
 

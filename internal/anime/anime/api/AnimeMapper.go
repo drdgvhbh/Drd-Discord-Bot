@@ -1,7 +1,7 @@
 package api
 
 import (
-	"drdgvhbh/discordbot/internal/anime/anime/entity"
+	"drdgvhbh/discordbot/internal/entity"
 )
 
 type AnimeMapper interface {

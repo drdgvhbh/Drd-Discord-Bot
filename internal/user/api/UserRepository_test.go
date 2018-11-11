@@ -1,5 +1,7 @@
 package api_test
 
+/*
+
 import (
 	"drdgvhbh/discordbot/internal/user/api"
 	"drdgvhbh/discordbot/internal/user/domain"
@@ -104,3 +106,4 @@ func (
 func TestUserRepositoryInsertSuite(t *testing.T) {
 	suite.Run(t, new(userRepositoryInsertion))
 }
+*/

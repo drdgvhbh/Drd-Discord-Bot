@@ -7,6 +7,7 @@ import (
 	"drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
+	stockApi "drdgvhbh/discordbot/internal/stock/api"
 	userApi "drdgvhbh/discordbot/internal/user/api"
 
 	nativeCli "github.com/urfave/cli"
@@ -17,6 +18,11 @@ import (
 func InitializeUserRepository() *userApi.UserRepository {
 	wire.Build(RootSet)
 	return &userApi.UserRepository{}
+}
+
+func InitializeStockRepository() *stockApi.StockRepository {
+	wire.Build(RootSet)
+	return &stockApi.StockRepository{}
 }
 
 func InitializeCharacterRepository() *characterApi.CharacterRepository {

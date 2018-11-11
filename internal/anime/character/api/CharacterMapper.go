@@ -1,9 +1,9 @@
 package api
 
 import (
-	"drdgvhbh/discordbot/internal/anime/character/entity"
+	"drdgvhbh/discordbot/internal/entity"
 )
 
 type CharacterMapper interface {
-	MapTo(*Character) *entity.Character
+	MapTo(*Character) *entity.AnimeCharacter
 }

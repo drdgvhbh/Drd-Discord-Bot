@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"drdgvhbh/discordbot/internal/anime/character/api"
-	"drdgvhbh/discordbot/internal/anime/character/entity"
+	"drdgvhbh/discordbot/internal/entity"
 	"strconv"
 )
 
@@ -26,7 +26,7 @@ func ProvideCharacterMapper() *CharacterMapper {
 
 func (characterMapper CharacterMapper) MapTo(
 	character *api.Character,
-) *entity.Character {
+) *entity.AnimeCharacter {
 	return entity.CreateCharacter(
 		strconv.Itoa(character.MalID),
 		character.Name,

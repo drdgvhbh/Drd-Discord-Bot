@@ -2,8 +2,8 @@ package api
 
 import (
 	"drdgvhbh/discordbot/internal/db/pg"
+	"drdgvhbh/discordbot/internal/entity"
 	"drdgvhbh/discordbot/internal/user/domain"
-	"drdgvhbh/discordbot/internal/user/entity"
 	"fmt"
 
 	pq "github.com/lib/pq"

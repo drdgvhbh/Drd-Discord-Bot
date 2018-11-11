@@ -1,1 +1,1 @@
-mockery -name=$1 -recursive=true
+cd internal && mockery -name=$1 -recursive=true

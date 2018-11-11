@@ -1,10 +1,9 @@
 package commands
 
 import (
-	animeDomain "drdgvhbh/discordbot/internal/anime/anime/domain"
-	characterDomain "drdgvhbh/discordbot/internal/anime/character/domain"
+	"drdgvhbh/discordbot/internal/service/stock"
 	"fmt"
-	"math"
+	"log"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -12,26 +11,23 @@ import (
 )
 
 type AnimeStockQuoteCommandFactory struct {
-	animeCharacterRepository characterDomain.CharacterRepository
-	animeRepository          animeDomain.AnimeRepository
+	stockInteractor stock.StockInteractor
 }
 
 func CreateAnimeStockQuoteCommandFactory(
-	animeCharacterRepository characterDomain.CharacterRepository,
-	animeRepository animeDomain.AnimeRepository,
+	stockInteractor stock.StockInteractor,
 ) *AnimeStockQuoteCommandFactory {
 	return &AnimeStockQuoteCommandFactory{
-		animeCharacterRepository: animeCharacterRepository,
-		animeRepository:          animeRepository,
+		stockInteractor,
 	}
 }
 
 func ProvideAnimeStockQuoteCommandFactory(
-	animeCharacterRepository characterDomain.CharacterRepository,
-	animeRepository animeDomain.AnimeRepository,
+	stockInteractor stock.StockInteractor,
 ) *AnimeStockQuoteCommandFactory {
 	return CreateAnimeStockQuoteCommandFactory(
-		animeCharacterRepository, animeRepository)
+		stockInteractor,
+	)
 }
 
 func (
@@ -40,59 +36,46 @@ func (
 	write func(message string),
 	writeEmbed func(message *discordgo.MessageEmbed),
 ) *cli.Command {
-	animeCharacterRepository := animeStockQuoteCommandFactory.animeCharacterRepository
-	animeRepository := animeStockQuoteCommandFactory.animeRepository
+	stockInteractor := animeStockQuoteCommandFactory.stockInteractor
 
 	return &cli.Command{
 		Name:  "quote",
 		Usage: "Gets the price of the stock",
 		Flags: []cli.Flag{
 			cli.StringFlag{
-				Name:  "character, c",
-				Usage: "Anime Character",
-			},
-			cli.StringFlag{
 				Name:  "anime, a",
 				Usage: "Anime",
 			},
 		},
 		Action: func(ctx *cli.Context) error {
-			animeCharacterName := ctx.String("character")
 			animeTitle := ctx.String("anime")
 
-			if animeCharacterName == "" || animeTitle == "" {
+			if animeTitle == "" {
 				cli.ShowCommandHelp(ctx, "quote")
 
 				return nil
 			}
 
-			characters, characterError := animeCharacterRepository.SearchCharactersByName(
-				animeCharacterName)
-
-			animes, animeError := animeRepository.SearchAnimesByTitle(
-				animeTitle)
-
-			if characterError != nil || animeError != nil {
-				write(fmt.Sprintf("Failed to get quote for %s", animeCharacterName))
-				return characterError
-			}
-
-			marketPrice := func(score float64) float64 {
-				return (math.Pow(score, 3.0) + math.Pow(score, 2.0)) + score
+			stock, err := stockInteractor.StockQuotePrice(animeTitle)
+			if err != nil {
+				log.Fatalln(err)
 			}
 
 			writeEmbed(&discordgo.MessageEmbed{
-				Title:       fmt.Sprintf("%s (%s)", characters[0].Name(), animes[0].Title()),
+				Title:       fmt.Sprintf("%s", stock.ID()),
 				Description: "Stock Quote",
 				Color:       0xFFFFCC,
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:   "Price",
-						Value:  fmt.Sprintf("%.4f", marketPrice(animes[0].Score())),
+						Value:  fmt.Sprintf("%.4f", stock.Price()),
 						Inline: true,
 					},
 				},
-				Timestamp: time.Now().Format(time.RFC3339),
+				Thumbnail: &discordgo.MessageEmbedThumbnail{
+					URL: stock.ImageURL(),
+				},
+				Timestamp: stock.LastUpdated().Format(time.RFC3339),
 			})
 
 			return nil

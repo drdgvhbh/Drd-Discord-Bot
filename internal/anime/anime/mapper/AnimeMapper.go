@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"drdgvhbh/discordbot/internal/anime/anime/api"
-	"drdgvhbh/discordbot/internal/anime/anime/entity"
+	"drdgvhbh/discordbot/internal/entity"
 	"strconv"
 )
 
@@ -27,9 +27,12 @@ func ProvideAnimeMapper() *AnimeMapper {
 func (animeMapper AnimeMapper) MapTo(
 	anime *api.Anime,
 ) *entity.Anime {
-	return entity.CreateAnime(
-		strconv.Itoa(anime.MalID),
-		anime.Title,
-		anime.Score,
+	return entity.NewAnime(
+		&entity.NewAnimeParams{
+			ID:       strconv.Itoa(anime.MalID),
+			Title:    anime.Title,
+			Score:    anime.Score,
+			ImageURL: anime.ImageURL,
+		},
 	)
 }

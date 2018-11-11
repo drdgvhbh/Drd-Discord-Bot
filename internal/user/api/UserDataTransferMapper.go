@@ -1,6 +1,6 @@
 package api
 
-import "drdgvhbh/discordbot/internal/user/entity"
+import "drdgvhbh/discordbot/internal/entity"
 
 type UserDataTransferMapper interface {
 	CreateUserFrom(*User) *entity.User

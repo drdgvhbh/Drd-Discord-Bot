@@ -13,7 +13,7 @@ func (user User) Tokens() float64 {
 	return user.tokens
 }
 
-func CreateUser(id string, startingTokens float64) *User {
+func NewUser(id string, startingTokens float64) *User {
 	return &User{
 		id:     id,
 		tokens: startingTokens,

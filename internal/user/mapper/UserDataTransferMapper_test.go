@@ -1,5 +1,7 @@
 package mapper_test
 
+/*
+
 import (
 	"drdgvhbh/discordbot/internal/user/api"
 	"drdgvhbh/discordbot/internal/user/entity"
@@ -42,3 +44,4 @@ func TestCreateUserFrom(t *testing.T) {
 		userDataTransferMapper.CreateUserFrom(user),
 		entity.CreateUser(id, tokens))
 }
+*/

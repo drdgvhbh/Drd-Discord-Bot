@@ -6,14 +6,16 @@
 package di
 
 import (
-	api3 "drdgvhbh/discordbot/internal/anime/anime/api"
-	mapper3 "drdgvhbh/discordbot/internal/anime/anime/mapper"
-	api2 "drdgvhbh/discordbot/internal/anime/character/api"
-	mapper2 "drdgvhbh/discordbot/internal/anime/character/mapper"
+	api4 "drdgvhbh/discordbot/internal/anime/anime/api"
+	mapper4 "drdgvhbh/discordbot/internal/anime/anime/mapper"
+	api3 "drdgvhbh/discordbot/internal/anime/character/api"
+	mapper3 "drdgvhbh/discordbot/internal/anime/character/mapper"
 	cli2 "drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
+	api2 "drdgvhbh/discordbot/internal/stock/api"
+	mapper2 "drdgvhbh/discordbot/internal/stock/mapper"
 	"drdgvhbh/discordbot/internal/user/api"
 	"drdgvhbh/discordbot/internal/user/mapper"
 	"github.com/bwmarrin/discordgo"
@@ -30,9 +32,17 @@ func InitializeUserRepository() *api.UserRepository {
 	return userRepository
 }
 
-func InitializeCharacterRepository() *api2.CharacterRepository {
-	characterMapper := mapper2.ProvideCharacterMapper()
-	characterRepository := api2.ProvideCharacterRepository(characterMapper)
+func InitializeStockRepository() *api2.StockRepository {
+	config := pg.ProvideConfig()
+	connector := pg.ProvideConnector(config)
+	stockDataTransferMapper := mapper2.CreateStockMapper()
+	stockRepository := ProvideStockRepository(connector, stockDataTransferMapper)
+	return stockRepository
+}
+
+func InitializeCharacterRepository() *api3.CharacterRepository {
+	characterMapper := mapper3.ProvideCharacterMapper()
+	characterRepository := api3.ProvideCharacterRepository(characterMapper)
 	return characterRepository
 }
 
@@ -60,11 +70,16 @@ func InitializeRegisterUserCommandFactory() *commands.RegisterUserCommandFactory
 }
 
 func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandFactory {
-	characterMapper := mapper2.ProvideCharacterMapper()
-	characterRepository := api2.ProvideCharacterRepository(characterMapper)
-	animeMapper := mapper3.ProvideAnimeMapper()
-	animeRepository := api3.ProvideAnimeRepository(animeMapper)
-	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(characterRepository, animeRepository)
+	config := pg.ProvideConfig()
+	connector := pg.ProvideConnector(config)
+	stockDataTransferMapper := mapper2.CreateStockMapper()
+	stockRepository := ProvideStockRepository(connector, stockDataTransferMapper)
+	logrusLogger := ProvideLogger()
+	stockRepositoryLogger := ProvideStockRepositoryLogger(stockRepository, logrusLogger)
+	animeMapper := mapper4.ProvideAnimeMapper()
+	animeRepository := api4.ProvideAnimeRepository(animeMapper)
+	stockInteractorImp := ProvideStockInteractor(stockRepositoryLogger, animeRepository)
+	animeStockQuoteCommandFactory := commands.ProvideAnimeStockQuoteCommandFactory(stockInteractorImp)
 	return animeStockQuoteCommandFactory
 }
 

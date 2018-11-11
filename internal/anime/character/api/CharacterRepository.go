@@ -1,7 +1,7 @@
 package api
 
 import (
-	"drdgvhbh/discordbot/internal/anime/character/entity"
+	"drdgvhbh/discordbot/internal/entity"
 	"encoding/json"
 	"fmt"
 
@@ -39,7 +39,7 @@ func (
 	characterRepository CharacterRepository,
 ) SearchCharactersByName(
 	name string,
-) ([]*entity.Character, error) {
+) ([]*entity.AnimeCharacter, error) {
 	var endpoint = fmt.Sprintf(
 		"https://api.jikan.moe/v3/search/character/?q=%s&page=1",
 		name)
@@ -55,8 +55,8 @@ func (
 
 	characters := funk.Map(
 		searchCharacterResponse.Results,
-		func(x *Character) *entity.Character {
+		func(x *Character) *entity.AnimeCharacter {
 			return characterRepository.mapper.MapTo(x)
-		}).([]*entity.Character)
+		}).([]*entity.AnimeCharacter)
 	return characters, nil
 }
