@@ -73,3 +73,10 @@ var RootSet = wire.NewSet(
 	commandSet, characterSet, animeSet,
 	stockSet, userSet,
 	interactorSet)
+
+/////
+var RootSet2 = wire.NewSet(persistanceSet)
+
+var persistanceSet = wire.NewSet(ProvideDBConnection, ProvideRepository)
+
+var domainSet = wire.NewSet(ProvideStartAuctionService)

@@ -68,3 +68,7 @@ required = ["github.com/google/go-cloud/wire/cmd/wire", "github.com/vektra/mocke
 [[constraint]]
   name = "github.com/google/uuid"
   version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/jackc/pgx"
+  version = "3.2.0"

@@ -3,6 +3,7 @@ package main
 import (
 	"drdgvhbh/discordbot/internal/cli/anime/mal/commands"
 	"drdgvhbh/discordbot/internal/di"
+	realCommands "drdgvhbh/discordbot/internal/discord/bot/commands"
 	messageMiddleware "drdgvhbh/discordbot/internal/discord/message/middleware"
 	"drdgvhbh/discordbot/internal/discord/writer"
 	"drdgvhbh/discordbot/internal/entity"
@@ -164,6 +165,12 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 				),
 				commands.GetAnimeProfileCommand(commandCB),
 			}),
+			*realCommands.NewAuctionCommand(
+				[]cli.Command{
+					*realCommands.NewCurrentAuctionCommand([]cli.Command{}),
+					*realCommands.NewStartAuctionCommand([]cli.Command{}),
+				},
+			),
 		)
 
 		err := cliApp.Run(args)

@@ -4,10 +4,13 @@ import (
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/service/repository"
 	"drdgvhbh/discordbot/internal/service/stock/implementation"
+	"drdgvhbh/discordbot/internal/start"
 	stockApi "drdgvhbh/discordbot/internal/stock/api"
+	"drdgvhbh/discordbot/internal/storage/postgres"
 	userApi "drdgvhbh/discordbot/internal/user/api"
 	"os"
 
+	"github.com/jackc/pgx"
 	"github.com/sirupsen/logrus"
 )
 
@@ -103,4 +106,54 @@ func ProvideStockInteractor(
 			StockRepository: stockRepository,
 			AnimeRepository: animeRepository,
 		})
+}
+
+var outputChannel chan interface{}
+
+func ProvideOutputChannel() chan interface{} {
+	if outputChannel != nil {
+		return outputChannel
+	}
+
+	presentationChannel := make(chan interface{})
+
+	return presentationChannel
+}
+
+var connection *pgx.Conn
+
+func ProvideDBConnection() *pgx.Conn {
+	if connection != nil {
+		return connection
+	}
+
+	connection := postgres.NewConnection()
+	return connection
+}
+
+var repository_ *postgres.Repository
+
+func ProvideRepository(dbConnection *pgx.Conn) *postgres.Repository {
+	if repository_ != nil {
+		return repository_
+	}
+
+	repository_ := postgres.NewRepository(dbConnection)
+
+	return repository_
+}
+
+var startAuctionService start.AuctionService
+
+func ProvideStartAuctionService(
+	eventChannel chan interface{},
+	repository *postgres.Repository,
+) start.AuctionService {
+	if startAuctionService != nil {
+		return startAuctionService
+	}
+
+	startAuctionService = start.NewAuctionService(eventChannel, repository)
+
+	return startAuctionService
 }

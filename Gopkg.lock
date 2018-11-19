@@ -43,6 +43,21 @@
   revision = "76e4896901ef89d253d69b528d3701dd146fe2ae"
 
 [[projects]]
+  digest = "1:8dfbec76b4834d96c37ba4c4969fc47c9a15e67c5a7eecfa031fbe67dab50429"
+  name = "github.com/jackc/pgx"
+  packages = [
+    ".",
+    "chunkreader",
+    "internal/sanitize",
+    "pgio",
+    "pgproto3",
+    "pgtype"
+  ]
+  pruneopts = "UT"
+  revision = "89f1e6ac7276b61d885db5e5aed6fcbedd1c7e31"
+  version = "v3.2.0"
+
+[[projects]]
   branch = "master"
   digest = "1:f478b446ff59d0900d6ce0ffebef29b3e4d2373f3e3f3b92e0e1d60bc2b0870e"
   name = "github.com/joho/godotenv"
@@ -105,12 +120,9 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:05aaa4aafcc339843489e731d3b223efc537bbf2eddbb57ded586064baaee260"
+  digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
   name = "github.com/sirupsen/logrus"
-  packages = [
-    ".",
-    "hooks/test"
-  ]
+  packages = ["."]
   pruneopts = "UT"
   revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
   version = "v1.2.0"
@@ -247,12 +259,12 @@
     "github.com/google/go-cloud/wire",
     "github.com/google/go-cloud/wire/cmd/wire",
     "github.com/google/uuid",
+    "github.com/jackc/pgx",
     "github.com/joho/godotenv/autoload",
     "github.com/lib/pq",
     "github.com/parnurzeal/gorequest",
     "github.com/pkg/errors",
     "github.com/sirupsen/logrus",
-    "github.com/sirupsen/logrus/hooks/test",
     "github.com/stretchr/gorc",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
