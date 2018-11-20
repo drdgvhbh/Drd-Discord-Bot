@@ -2,11 +2,20 @@
 
 
 [[projects]]
-  digest = "1:182c975f81e52f08bddca2e91ed74454a52fddb4a971cb81ddcb5f3c24e98b1e"
+  branch = "master"
+  digest = "1:961bff420e181fa58dd1c2a8861186c08fbc6723194dbd47887cbc97c747c074"
+  name = "github.com/ReactiveX/RxGo"
+  packages = ["observable"]
+  pruneopts = "UT"
+  revision = "d8276d44ae6bf0008837d89d9d3413eda3c56ace"
+
+[[projects]]
+  digest = "1:fc4f149402c1fa7258290c3f91b0bfbc709763f3d3899609a2e4a0163dec65c6"
   name = "github.com/bwmarrin/discordgo"
   packages = ["."]
   pruneopts = "UT"
-  revision = "73f6772a2b7cc95e29c462e4f15bf07cbe0d3854"
+  revision = "8325a6bf6dd6c91ed4040a1617b07287b8fb0eba"
+  version = "v0.19.0"
 
 [[projects]]
   branch = "master"
@@ -17,7 +26,7 @@
   revision = "d8f796af33cc11cb798c1aaeb27a4ebc5099927d"
 
 [[projects]]
-  digest = "1:6b31f07e94866306687219712fc79ed2b4efb5b8ede173e1f89c843dde5babde"
+  digest = "1:ab5c9f9d24aa14569408f4e74cd89eeb5661b120436face35ac067bcf8b8d617"
   name = "github.com/google/go-cloud"
   packages = [
     "wire",
@@ -25,22 +34,24 @@
     "wire/internal/wire"
   ]
   pruneopts = "UT"
-  revision = "d43c406711eb323fb6ab8a7d7e607358b99782a2"
+  revision = "2152f209f3c907645f7ebdcacdb2c18cd89e6fa8"
+  version = "0.5.0"
 
 [[projects]]
-  digest = "1:3a26588bc48b96825977c1b3df964f8fd842cd6860cc26370588d3563433cf11"
+  digest = "1:236d7e1bdb50d8f68559af37dbcf9d142d56b431c9b2176d41e2a009b664cda8"
   name = "github.com/google/uuid"
   packages = ["."]
   pruneopts = "UT"
-  revision = "d460ce9f8df2e77fb1ba55ca87fafed96c607494"
-  version = "v1.0.0"
+  revision = "9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8"
+  version = "v1.1.0"
 
 [[projects]]
-  digest = "1:9ee923192163b86d29ab503748f3cb4a3e37607dbf46be4dde5716499a3c84af"
+  digest = "1:7b5c6e2eeaa9ae5907c391a91c132abfd5c9e8a784a341b5625e750c67e6825d"
   name = "github.com/gorilla/websocket"
   packages = ["."]
   pruneopts = "UT"
-  revision = "76e4896901ef89d253d69b528d3701dd146fe2ae"
+  revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:8dfbec76b4834d96c37ba4c4969fc47c9a15e67c5a7eecfa031fbe67dab50429"
@@ -88,20 +99,20 @@
   revision = "9eb73efc1fcc404148b56765b0d3f61d9a5ef8ee"
 
 [[projects]]
-  branch = "master"
   digest = "1:7aefb397a53fc437c90f0fdb3e1419c751c5a3a165ced52325d5d797edf1aca6"
   name = "github.com/moul/http2curl"
   packages = ["."]
   pruneopts = "UT"
   revision = "9ac6cf4d929b2fa8fd2d2e6dec5bb0feb4f4911d"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "develop"
-  digest = "1:279c6e710389281535807b3f8b7c5e88a6594fda2127f5a77635ab5317b3d399"
+  digest = "1:5cbba6107995f5304a87356dbce30a79167c2ba7ebfbeec948055a7a920f22f6"
   name = "github.com/parnurzeal/gorequest"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8e3aed27fe49f7fdc765dad067845f600fc984e8"
+  revision = "9433d8c3b4c5f3bbeca487a6a410008eab3ce5ee"
 
 [[projects]]
   branch = "master"
@@ -118,6 +129,21 @@
   pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:1f19f73a1723643e4953d5722556f7fb06fb3dc16f853f9b6b6dd63ef7eca720"
+  name = "github.com/reactivex/rxgo"
+  packages = [
+    ".",
+    "errors",
+    "fx",
+    "handlers",
+    "observer",
+    "subscription"
+  ]
+  pruneopts = "UT"
+  revision = "d8276d44ae6bf0008837d89d9d3413eda3c56ace"
 
 [[projects]]
   digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
@@ -165,21 +191,23 @@
   version = "0.4"
 
 [[projects]]
-  digest = "1:3fb803863fd713550106aa42c4545b428401c6aad1002de19b1e634339e9cef6"
+  digest = "1:b24d38b282bacf9791408a080f606370efa3d364e4b5fd9ba0f7b87786d3b679"
   name = "github.com/urfave/cli"
   packages = ["."]
   pruneopts = "UT"
-  revision = "934abfb2f102315b5794e15ebc7949e4ca253920"
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:1378ebd451fe372493ba42b4ef5ef5d5f09392ebf947a5d15f5a693e7ea4bc74"
+  digest = "1:29707fe1cd4eecd4a755b968d24168da4f8999b44ce333ce62fa3a3d0f8a2762"
   name = "github.com/vektra/mockery"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ea265755d541b124de6bc248f7744eab9005fd33"
+  revision = "2be70d1c16b905d1ebbb3f1da219b11de416a0e6"
 
 [[projects]]
+  branch = "master"
   digest = "1:207d2e280e7a43845b12d07437538d22d02dbd4c274b49f3940bb3dce2ed70d7"
   name = "golang.org/x/crypto"
   packages = [
@@ -190,9 +218,10 @@
     "ssh/terminal"
   ]
   pruneopts = "UT"
-  revision = "e84da0312774c21d64ee2317962ef669b27ffb41"
+  revision = "3d3f9f413869b949e48070b5bc593aa22cc2b8f2"
 
 [[projects]]
+  branch = "master"
   digest = "1:e56a91f64003cb1bf7fed334ba2615d9750991d4570d5254a7cdbeac3374d546"
   name = "golang.org/x/net"
   packages = [
@@ -200,18 +229,18 @@
     "publicsuffix"
   ]
   pruneopts = "UT"
-  revision = "9b4f9f5ad5197c79fd623a3638e70d8b26cef344"
+  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
 
 [[projects]]
   branch = "master"
-  digest = "1:6a875550c3b582f6c2d7e2ce44aba792511f00016d7c46b0a4fb26f730ef3058"
+  digest = "1:48b757e61d662021f49a6a0afc67dacae27ee0c3a8f858d927126bcdf49222d3"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows"
   ]
   pruneopts = "UT"
-  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
+  revision = "ec83556a53fe16b65c452a104ea9d1e86a671852"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -238,7 +267,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ef14d82562109d84ffea95e11945c59bb5547e0ef8e4933fac5e3ac6be3a662e"
+  digest = "1:27c850168f8d0ed883decfab47bed4f4fd913fc55f7bdd57415e0983e4ff6c64"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -248,12 +277,13 @@
     "go/types/typeutil"
   ]
   pruneopts = "UT"
-  revision = "e21233ffa6c386fc230b4328493f77af54ff9372"
+  revision = "89e258047f9bd4255fae0d48139e1d5ff0a7b8dd"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/ReactiveX/RxGo/observable",
     "github.com/bwmarrin/discordgo",
     "github.com/davecgh/go-spew/spew",
     "github.com/google/go-cloud/wire",
@@ -264,6 +294,7 @@
     "github.com/lib/pq",
     "github.com/parnurzeal/gorequest",
     "github.com/pkg/errors",
+    "github.com/reactivex/rxgo",
     "github.com/sirupsen/logrus",
     "github.com/stretchr/gorc",
     "github.com/stretchr/testify/assert",

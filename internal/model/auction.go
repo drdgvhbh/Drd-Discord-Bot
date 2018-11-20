@@ -23,20 +23,20 @@ type NewAuctionParams struct {
 }
 
 func NewAuction(params *NewAuctionParams) *Auction {
-	id := params.ID
-	if params.ID == nil {
-		newUUID := uuid.New()
-		id = &newUUID
+	newUUID := uuid.New()
+	id := &newUUID
+	if params.ID != nil {
+		id = params.ID
 	}
 
-	endsAt := *params.EndsAt
-	if params.EndsAt == nil {
-		endsAt = time.Now().Add(time.Hour * 7)
+	endsAt := time.Now().Add(time.Hour * 7)
+	if params.EndsAt != nil {
+		endsAt = *params.EndsAt
 	}
 
-	bids := *params.Bids
-	if params.Bids == nil {
-		bids = []*Bid{}
+	bids := []*Bid{}
+	if params.Bids != nil {
+		bids = *params.Bids
 	}
 
 	return &Auction{

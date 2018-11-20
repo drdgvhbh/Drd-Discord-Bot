@@ -14,6 +14,8 @@ import (
 	"drdgvhbh/discordbot/internal/db/pg"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
+	start2 "drdgvhbh/discordbot/internal/discord/start"
+	"drdgvhbh/discordbot/internal/start"
 	api2 "drdgvhbh/discordbot/internal/stock/api"
 	mapper2 "drdgvhbh/discordbot/internal/stock/mapper"
 	"drdgvhbh/discordbot/internal/user/api"
@@ -83,10 +85,27 @@ func InitializeAnimeStockQuoteCommandFactory() *commands.AnimeStockQuoteCommandF
 	return animeStockQuoteCommandFactory
 }
 
+func InitializeStartAuctionService() start.AuctionService {
+	v := ProvideOutputChannel()
+	conn := ProvideDBConnection()
+	repository := ProvideRepository(conn)
+	auctionService := ProvideStartAuctionService(v, repository)
+	return auctionService
+}
+
+func InitializeOutputChannel() chan interface{} {
+	v := ProvideOutputChannel()
+	return v
+}
+
 // wire.go:
 
 func InitializeAnimeCommand(
 	subCommands []cli.Command,
 ) *cli.Command {
 	return commands.ProvideAnimeCommand(subCommands)
+}
+
+func InitializeStartAuctionCommand() *cli.Command {
+	return start2.NewAuctionCommand(InitializeStartAuctionService())
 }

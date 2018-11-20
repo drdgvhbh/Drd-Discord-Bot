@@ -47,22 +47,26 @@ func (auctionService *auctionService) StartAuctionFor(
 	eventChannel := auctionService.eventChannel
 	err := repository.AddAuction(newAuction)
 	if err != nil {
-		eventChannel <- AuctionEvent{
-			auction:      newAuction,
-			isSuccessful: false,
-			errors: []error{
-				err,
-			},
-		}
+		go func() {
+			eventChannel <- AuctionEvent{
+				auction:      newAuction,
+				isSuccessful: false,
+				errors: []error{
+					err,
+				},
+			}
+		}()
 
 		return
 	}
 
-	eventChannel <- AuctionEvent{
-		auction:      newAuction,
-		isSuccessful: true,
-		errors:       []error{},
-	}
+	go func() {
+		eventChannel <- AuctionEvent{
+			auction:      newAuction,
+			isSuccessful: true,
+			errors:       []error{},
+		}
+	}()
 }
 
 type AuctionEvent struct {

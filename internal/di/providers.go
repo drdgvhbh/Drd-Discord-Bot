@@ -115,9 +115,9 @@ func ProvideOutputChannel() chan interface{} {
 		return outputChannel
 	}
 
-	presentationChannel := make(chan interface{})
+	outputChannel = make(chan interface{})
 
-	return presentationChannel
+	return outputChannel
 }
 
 var connection *pgx.Conn
@@ -127,7 +127,7 @@ func ProvideDBConnection() *pgx.Conn {
 		return connection
 	}
 
-	connection := postgres.NewConnection()
+	connection = postgres.NewConnection()
 	return connection
 }
 
@@ -138,7 +138,7 @@ func ProvideRepository(dbConnection *pgx.Conn) *postgres.Repository {
 		return repository_
 	}
 
-	repository_ := postgres.NewRepository(dbConnection)
+	repository_ = postgres.NewRepository(dbConnection)
 
 	return repository_
 }

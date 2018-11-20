@@ -14,8 +14,10 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/ReactiveX/RxGo/observable"
 	"github.com/bwmarrin/discordgo"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/reactivex/rxgo/observer"
 	"github.com/urfave/cli"
 )
 
@@ -82,6 +84,28 @@ OPTIONS:
 }
 
 func main() {
+	watcher := observer.Observer{
+
+		// Register a handler function for every next available item.
+		NextHandler: func(item interface{}) {
+			fmt.Printf("Processing: %v\n", item)
+		},
+
+		// Register a handler for any emitted error.
+		ErrHandler: func(err error) {
+			fmt.Printf("Encountered error: %v\n", err)
+		},
+
+		// Register a handler when a stream is completed.
+		DoneHandler: func() {
+			fmt.Println("Done!")
+		},
+	}
+	outputChannel := di.InitializeOutputChannel()
+	go func() {
+		<-observable.Observable(outputChannel).Subscribe(watcher)
+	}()
+
 	dg := di.InitializeDiscordBot()
 
 	// Register the messageCreate func as a callback for MessageCreate events.
@@ -168,7 +192,8 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			*realCommands.NewAuctionCommand(
 				[]cli.Command{
 					*realCommands.NewCurrentAuctionCommand([]cli.Command{}),
-					*realCommands.NewStartAuctionCommand([]cli.Command{}),
+					// *realCommands.NewStartAuctionCommand([]cli.Command{}),
+					*di.InitializeStartAuctionCommand(),
 				},
 			),
 		)

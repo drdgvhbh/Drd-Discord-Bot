@@ -7,6 +7,9 @@ import (
 	"drdgvhbh/discordbot/internal/cli"
 	"drdgvhbh/discordbot/internal/discord/bot"
 	"drdgvhbh/discordbot/internal/discord/bot/commands"
+	discordStart "drdgvhbh/discordbot/internal/discord/start"
+	"drdgvhbh/discordbot/internal/start"
+
 	stockApi "drdgvhbh/discordbot/internal/stock/api"
 	userApi "drdgvhbh/discordbot/internal/user/api"
 
@@ -50,4 +53,16 @@ func InitializeAnimeCommand(
 	subCommands []nativeCli.Command,
 ) *nativeCli.Command {
 	return commands.ProvideAnimeCommand(subCommands)
+}
+
+func InitializeStartAuctionService() start.AuctionService {
+	panic(wire.Build(RootSet2))
+}
+
+func InitializeStartAuctionCommand() *nativeCli.Command {
+	return discordStart.NewAuctionCommand(InitializeStartAuctionService())
+}
+
+func InitializeOutputChannel() chan interface{} {
+	panic(wire.Build(RootSet2))
 }

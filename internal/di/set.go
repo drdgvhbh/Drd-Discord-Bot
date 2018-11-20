@@ -75,8 +75,8 @@ var RootSet = wire.NewSet(
 	interactorSet)
 
 /////
-var RootSet2 = wire.NewSet(persistanceSet)
+var RootSet2 = wire.NewSet(persistanceSet, domainSet)
 
 var persistanceSet = wire.NewSet(ProvideDBConnection, ProvideRepository)
 
-var domainSet = wire.NewSet(ProvideStartAuctionService)
+var domainSet = wire.NewSet(ProvideStartAuctionService, ProvideOutputChannel)
