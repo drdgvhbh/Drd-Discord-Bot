@@ -35,3 +35,36 @@ ALTER TABLE ONLY public.users
 --
 -- PostgreSQL database dump complete
 --
+
+-- Table: public.auctions
+
+-- DROP TABLE public.auctions;
+
+CREATE TABLE public.auctions
+(
+    id uuid NOT NULL,
+    ends_at timestamp with time zone NOT NULL,
+    bids uuid[] NOT NULL,
+    anime_character_id character varying COLLATE pg_catalog."default" NOT NULL,
+    discord_server_id character varying COLLATE pg_catalog."default" NOT NULL,
+    created timestamp with time zone NOT NULL DEFAULT now(),
+    updated timestamp with time zone NOT NULL,
+    CONSTRAINT auctions_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.auctions
+    OWNER to drd;
+
+-- Trigger: update_auction_modtime
+
+-- DROP TRIGGER update_auction_modtime ON public.auctions;
+
+CREATE TRIGGER update_auction_modtime
+    BEFORE UPDATE 
+    ON public.auctions
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.update_modified_column();
