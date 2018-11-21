@@ -10,17 +10,19 @@
 
 ```
 NAME:
-  Ruin and Grief Bot - General purpose bot for ruining and griefing
+  Drd Bot - General purpose discord bot
 
  USAGE:
-  !ruin [global options] command [command options] [arguments...]
+  !cmd [global options] command [command options] [arguments...]
 
  VERSION:
   0.0.0
 
  COMMANDS:
-    anime    List anime commands
-    help, h  Shows a list of commands or help for one command
+    register  Registers a user for this bot's services on a Discord service
+    anime     List all anime related commands
+    auction   List all auction related commands
+    help, h   Shows a list of commands or help for one command
 
  GLOBAL OPTIONS:
   --help, -h     show help
